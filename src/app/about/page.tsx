@@ -2,7 +2,7 @@ import React from 'react';
 import Image from 'next/image';
 import Button from '@/components/ui/Button';
 
-const AboutPage: React.FC = () => {
+export default function AboutPage() {
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
       <h1 className="font-montserrat font-bold text-5xl text-viking-gold text-center mb-12">
@@ -11,7 +11,7 @@ const AboutPage: React.FC = () => {
       <div className="flex flex-col md:flex-row items-center gap-12 mb-16">
         <div className="w-full md:w-1/3 flex justify-center">
           <Image
-            src="/images/profile.jpg" // Sua foto de perfil
+            src="/images/profile.jpg"
             alt="Roberto, criador do Dagaz.Dev"
             width={250}
             height={250}
@@ -56,13 +56,11 @@ const AboutPage: React.FC = () => {
           <Button variant="primary" size="lg" as="a" href="/contact">
             Entrar em Contato
           </Button>
-          <Button variant="tertiary" size="lg" as="a" href="https://linkedin.com/in/seu_linkedin" target="_blank" rel="noopener noreferrer">
+          <Button variant="tertiary" size="lg" as="a" href="https://www.linkedin.com/in/roberto-martinelli-pinetti" target="_blank" rel="noopener noreferrer">
             Conectar no LinkedIn
           </Button>
         </div>
       </div>
     </div>
   );
-};
-
-export default AboutPage;
+}

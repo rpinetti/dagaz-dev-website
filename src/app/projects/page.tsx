@@ -1,17 +1,12 @@
 import React from 'react';
 import ProjectCard from '@/components/cards/ProjectCard';
-import { getAllRepos } from '@/lib/github'; // Você precisará implementar esta função
-import { InferGetStaticPropsType } from 'next';
+import { getAllRepos } from '@/lib/github';
 
-export const getStaticProps = async () => {
+export const revalidate = 3600;
+
+export default async function ProjectsPage() {
   const repos = await getAllRepos();
-  return {
-    props: { repos },
-    revalidate: 3600, // Revalida a cada hora
-  };
-};
 
-const ProjectsPage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ repos }) => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
       <h1 className="font-montserrat font-bold text-5xl text-glacial-cyan text-center mb-12">
@@ -27,6 +22,4 @@ const ProjectsPage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = (
       </div>
     </div>
   );
-};
-
-export default ProjectsPage;
+}

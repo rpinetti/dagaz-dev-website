@@ -36,6 +36,7 @@ const nextConfig = {
   },
   experimental: {
     appDir: true, // Habilita o App Router
+    serverActions: true, // Ativa Server Actions para formulários
   },
 };
 

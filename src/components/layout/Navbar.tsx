@@ -40,7 +40,7 @@ const Navbar: React.FC = () => {
               </li>
             ))}
           </ul>
-          <Button variant="primary" size="sm" as="a" href="https://github.com/seu_username_github" target="_blank" rel="noopener noreferrer">
+          <Button variant="primary" size="sm" as="a" href="https://github.com/rpinetti" target="_blank" rel="noopener noreferrer">
             GitHub
           </Button>
         </div>
