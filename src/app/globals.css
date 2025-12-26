@@ -1,0 +1,105 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Importar fontes do Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Montserrat:wght@500;600;700&family=Roboto+Mono:wght@400&display=swap');
+
+:root {
+  --font-montserrat: 'Montserrat', sans-serif;
+  --font-lato: 'Lato', sans-serif;
+  --font-roboto-mono: 'Roboto Mono', monospace;
+}
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: var(--font-lato);
+  background-color: theme('colors.fjord-blue.DEFAULT'); /* Fundo padrão */
+  color: theme('colors.runic-white'); /* Texto padrão */
+  line-height: 1.6;
+  scroll-behavior: smooth;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Estilos para o modo escuro */
+.dark {
+  background-color: theme('colors.forge-gray.DEFAULT');
+  color: theme('colors.runic-white');
+}
+
+/* Estilos para blocos de código (rehype-pretty-code) */
+.rehype-pretty-code-wrapper {
+  @apply relative my-6;
+}
+
+.rehype-pretty-code-wrapper pre {
+  @apply rounded-lg p-4 text-sm overflow-x-auto bg-forge-gray-dark;
+}
+
+.rehype-pretty-code-wrapper code {
+  @apply font-mono text-glacial-cyan;
+}
+
+.rehype-pretty-code-wrapper .line--highlighted {
+  @apply bg-forge-gray-light/50;
+}
+
+.rehype-pretty-code-wrapper .word--highlighted {
+  @apply bg-viking-gold/30 rounded-md px-1;
+}
+
+/* Estilos para o plugin @tailwindcss/typography */
+.prose {
+  @apply max-w-none; /* Remove a largura máxima padrão do typography */
+}
+
+.prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6 {
+  @apply font-montserrat text-viking-gold;
+}
+
+.prose h1 { @apply text-4xl md:text-5xl text-viking-gold; }
+.prose h2 { @apply text-3xl md:text-4xl text-glacial-cyan; }
+.prose h3 { @apply text-2xl md:text-3xl text-runic-white; }
+.prose h4 { @apply text-xl md:text-2xl text-runic-white; }
+
+.prose p {
+  @apply font-lato text-lg text-runic-white;
+}
+
+.prose a {
+  @apply text-glacial-cyan hover:text-viking-gold transition-colors;
+}
+
+.prose strong {
+  @apply text-viking-gold;
+}
+
+.prose code {
+  @apply font-mono text-glacial-cyan bg-forge-gray-light px-1 py-0.5 rounded;
+}
+
+.prose pre {
+  @apply bg-forge-gray-dark text-runic-white p-4 rounded-lg overflow-x-auto;
+}
+
+.prose blockquote {
+  @apply border-l-4 border-viking-gold pl-4 italic text-gray-400;
+}
+
+.prose ul, .prose ol {
+  @apply list-disc list-inside text-runic-white;
+}
+
+.prose li {
+  @apply mb-2;
+}
