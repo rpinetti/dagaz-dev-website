@@ -21,7 +21,7 @@ const Navbar: React.FC = () => {
     <nav className="sticky top-0 z-50 bg-fjord-blue border-b border-fjord-blue-light shadow-md">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
         <Link href="/" className="flex items-center gap-2 text-viking-gold font-montserrat font-bold text-2xl hover:text-glacial-cyan transition-colors">
-          <span className="text-3xl">🗡️</span> Dagaz.Dev
+          <span className="text-6xl text-viking-gold">ᛞ</span> Dagaz.Dev
         </Link>
 
         <div className="hidden md:flex items-center gap-8">
