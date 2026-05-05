@@ -1,0 +1,118 @@
+import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Search } from 'lucide-react';
+import Card from '../components/Card/Card';
+import styles from './Blog.module.css';
+
+// Carrega todos os MDX eagerly para termos acesso imediato ao frontmatter
+const mdxFiles = import.meta.glob('/src/content/blog/**/*.mdx', { eager: true });
+
+// Processa o objeto retornado pelo import.meta.glob em um array de posts
+const allPosts = Object.entries(mdxFiles).map(([path, module]) => {
+  // O path é algo como: /src/content/blog/pt/primeiro-artigo.mdx
+  const pathParts = path.split('/');
+  const fileName = pathParts.pop(); // primeiro-artigo.mdx
+  const lang = pathParts.pop(); // pt ou en
+  const id = fileName.replace('.mdx', '');
+  
+  return {
+    id,
+    lang,
+    // Garante que não quebre caso o MDX ainda não tenha o frontmatter configurado corretamente
+    title: module.frontmatter?.title || 'Título Indefinido',
+    date: module.frontmatter?.date || 'Data Desconhecida',
+    readingTime: module.frontmatter?.readingTime || 0,
+    categoryKey: module.frontmatter?.category || 'all',
+    desc: module.frontmatter?.desc || module.frontmatter?.description || 'Nenhuma descrição fornecida.'
+  };
+});
+
+const Blog = () => {
+  const { t, i18n } = useTranslation();
+  const [searchTerm, setSearchTerm] = useState('');
+  const [activeCategory, setActiveCategory] = useState('all');
+
+  const categories = [
+    { key: 'all', label: t('blog.categories.all') },
+    { key: 'sap', label: t('blog.categories.sap') },
+    { key: 'abap', label: t('blog.categories.abap') },
+    { key: 'career', label: t('blog.categories.career') },
+    { key: 'leadership', label: t('blog.categories.leadership') },
+  ];
+
+  // Filtra primeiro pelo idioma atual, depois por busca e categoria
+  const filteredPosts = allPosts.filter(post => {
+    // 1. Filtro de idioma
+    const currentLang = i18n.language || 'pt';
+    if (post.lang !== currentLang) return false;
+
+    // 2. Filtro de busca
+    const matchesSearch = post.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
+                          post.desc.toLowerCase().includes(searchTerm.toLowerCase());
+    
+    // 3. Filtro de categoria
+    // Nota: o categoryKey do MDX pode não bater exatamente com as chaves (ex: "Desenvolvimento"), 
+    // precisaremos mapear isso melhor depois, ou considerar "all" como default para fallback
+    const matchesCategory = activeCategory === 'all' || post.categoryKey.toLowerCase() === activeCategory.toLowerCase();
+    
+    return matchesSearch && matchesCategory;
+  });
+
+  return (
+    <div className="container" style={{ padding: '4rem 0' }}>
+      <h1 style={{ marginBottom: '0.5rem' }}>{t('nav.blog')}</h1>
+      <p style={{ color: 'var(--text-secondary)', marginBottom: '3rem' }}>
+        Artigos, tutoriais e reflexões sobre SAP, desenvolvimento e carreira.
+      </p>
+
+      {/* Busca */}
+      <div className={styles.searchContainer}>
+        <Search className={styles.searchIcon} size={20} />
+        <input 
+          type="text" 
+          placeholder={t('blog.search_placeholder')}
+          className={styles.searchInput}
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+      </div>
+
+      {/* Categorias (Pills) */}
+      <div className={styles.categoriesWrapper}>
+        {categories.map(cat => (
+          <button 
+            key={cat.key}
+            onClick={() => setActiveCategory(cat.key)}
+            className={`${styles.categoryPill} ${activeCategory === cat.key ? styles.active : ''}`}
+          >
+            {cat.label}
+          </button>
+        ))}
+      </div>
+
+      {/* Lista de Posts */}
+      {filteredPosts.length > 0 ? (
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: '2rem' }}>
+          {filteredPosts.map(post => (
+            <Card 
+              key={post.id}
+              title={post.title} 
+              subtitle={`${post.date} • ${post.readingTime} ${t('blog.reading_time')}`}
+              onClick={() => window.location.href = `/artigo/${post.id}`}
+            >
+              <p style={{ marginBottom: '1rem' }}>{post.desc}</p>
+              <span className="text-highlight" style={{ fontSize: '0.875rem', fontFamily: 'var(--font-heading)', fontWeight: 'bold' }}>{t('blog.read_more')} &rarr;</span>
+            </Card>
+          ))}
+        </div>
+      ) : (
+        <div className={styles.noResults}>
+          <h3>Nenhum pergaminho encontrado na forja.</h3>
+          <p>Tente buscar por outras palavras-chave ou categorias.</p>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default Blog;

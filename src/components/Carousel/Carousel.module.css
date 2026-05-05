@@ -1,0 +1,73 @@
+.carouselWrapper {
+  width: 100%;
+  margin: 2rem 0;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid rgba(0, 217, 255, 0.1);
+  padding-bottom: 1rem;
+}
+
+.title {
+  color: var(--color-viking-gold);
+  font-size: 2rem;
+  margin: 0;
+}
+
+.controls {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.navButton {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px solid var(--color-glacial-cyan);
+  color: var(--color-glacial-cyan);
+  background: transparent;
+  font-size: 1.25rem;
+  transition: all 0.3s ease;
+}
+
+.navButton:hover {
+  background: var(--color-glacial-cyan);
+  color: var(--color-forge-gray);
+  box-shadow: 0 0 10px rgba(0, 217, 255, 0.5);
+}
+
+.viewport {
+  overflow: hidden;
+}
+
+.container {
+  display: flex;
+  /* Margem negativa para compensar o gap */
+  margin-left: -1rem; 
+}
+
+.slide {
+  /* No mobile, exibe 1 inteiro. No desktop (md), 2. No desktop (lg), 3 ou 4 dependendo. */
+  flex: 0 0 100%;
+  min-width: 0;
+  padding-left: 1rem;
+}
+
+@media (min-width: 768px) {
+  .slide {
+    flex: 0 0 50%;
+  }
+}
+
+@media (min-width: 1024px) {
+  .slide {
+    flex: 0 0 33.333%;
+  }
+}

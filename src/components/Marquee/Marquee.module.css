@@ -1,0 +1,64 @@
+.marqueeContainer {
+  width: 100%;
+  overflow: hidden;
+  background-color: var(--bg-secondary);
+  border-top: 1px solid rgba(0, 217, 255, 0.1);
+  border-bottom: 1px solid rgba(0, 217, 255, 0.1);
+  padding: 1rem 0;
+  display: flex;
+  white-space: nowrap;
+}
+
+.marqueeContent {
+  display: inline-flex;
+  animation: scroll 30s linear infinite;
+}
+
+/* Pausar animação no hover */
+.marqueeContainer:hover .marqueeContent {
+  animation-play-state: paused;
+}
+
+.marqueeItem {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  display: inline-flex;
+  align-items: center;
+  transition: color 0.3s ease;
+}
+
+.marqueeItem:hover {
+  color: var(--color-glacial-cyan);
+}
+
+.separator {
+  color: var(--color-viking-gold);
+  margin: 0 3rem;
+  opacity: 0.5;
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* Suporte para quem prefere movimento reduzido no OS */
+@media (prefers-reduced-motion: reduce) {
+  .marqueeContent {
+    animation: none;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .marqueeContainer {
+    white-space: normal;
+  }
+}

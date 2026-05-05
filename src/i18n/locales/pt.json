@@ -1,0 +1,173 @@
+{
+  "nav": {
+    "sobre": "Sobre",
+    "servicos": "Serviços",
+    "insights": "Insights",
+    "investidores": "Investidores",
+    "busca": "Busca"
+  },
+  "hero": {
+    "badge": "SAP • CÓDIGO • TRANSFORMAÇÃO",
+    "title": "O amanhecer da clareza em meio à complexidade do código.",
+    "description": "A Dagaz.Dev é uma marca forjada para liderar a transformação digital no ecossistema SAP. Inspirada na força e sabedoria dos vikings, representamos o amanhecer da clareza em meio à complexidade do código, a precisão na consultoria e a coragem na inovação.",
+    "cta": "Falar com a forja",
+    "sealLabel": "SELO DE DAGAZ"
+  },
+  "industries": {
+    "title": "Setores onde trabalhamos",
+    "description": "Experiência em transformação digital para empresas de diversos segmentos"
+  },
+  "about": {
+    "label": "Sobre",
+    "title": "Filosofia: #CodandoComoVikings",
+    "description": "Nossa filosofia não é apenas um slogan, mas um compromisso com a excelência, a resiliência e a busca incessante por soluções que iluminam o caminho de nossos clientes.",
+    "philosophy": {
+      "clarity": {
+        "title": "Clareza",
+        "description": "Dissipamos a escuridão dos problemas complexos com soluções precisas e bem documentadas."
+      },
+      "transformation": {
+        "title": "Transformação",
+        "description": "Levamos sistemas legados para a modernidade, do ABAP ao BTP, com segurança e cadência."
+      },
+      "breakthrough": {
+        "title": "Breakthrough",
+        "description": "Buscamos o momento de insight que muda a trajetória de nossos clientes."
+      }
+    },
+    "team": {
+      "title": "Quem somos",
+      "description": "Um time de especialistas SAP, arquitetos de software e líderes técnicos dedicados à excelência."
+    }
+  },
+  "services": {
+    "label": "Serviços",
+    "title": "Serviços de transformação digital",
+    "description": "Soluções especializadas para modernização, integração e inovação em ambientes SAP.",
+    "items": {
+      "strategy": {
+        "title": "Estratégia SAP",
+        "description": "Roadmaps de transformação, governança e arquitetura para o futuro digital."
+      },
+      "development": {
+        "title": "Desenvolvimento",
+        "description": "ABAP, Fiori, BTP e integrações com qualidade e precisão de forja."
+      },
+      "integration": {
+        "title": "Integração",
+        "description": "APIs, eventos, automação e fluxos críticos com observabilidade completa."
+      },
+      "consulting": {
+        "title": "Consultoria",
+        "description": "Liderança técnica, mentoria e transformação cultural para times."
+      }
+    }
+  },
+  "testimonials": {
+    "title": "O que nossos clientes dizem",
+    "description": "Histórias de transformação e sucesso em ambientes SAP críticos."
+  },
+  "blog": {
+    "label": "Últimos insights",
+    "title": "Publicações da forja",
+    "description": "Conteúdo técnico, liderança de pensamento e inteligência SAP.",
+    "readMore": "Ler insight",
+    "viewAll": "Ver todos os insights"
+  },
+  "investors": {
+    "label": "Investidores & imprensa",
+    "title": "Um cofre editorial para relatórios, imprensa e confiança empresarial.",
+    "description": "A seção centraliza documentos demonstrativos para download e pode ser conectada a materiais reais da Dagaz Dev quando disponíveis.",
+    "openCenter": "Abrir centro completo"
+  },
+  "footer": {
+    "philosophy": "#CodandoComoVikings",
+    "tagline": "O amanhecer da clareza em meio à complexidade do código.",
+    "links": {
+      "about": "Sobre",
+      "services": "Serviços",
+      "insights": "Insights",
+      "investors": "Investidores",
+      "contact": "Contato"
+    },
+    "legal": {
+      "privacy": "Privacidade",
+      "terms": "Termos",
+      "cookies": "Cookies"
+    }
+  },
+  "insights": {
+    "title": "Centro de insights",
+    "subtitle": "Inteligência editorial",
+    "description": "Esta área consolida artigos demonstrativos, trilhas temáticas e autores especializados para sustentar liderança de pensamento e credibilidade técnica.",
+    "search": "Pesquisar por SAP, ABAP, BTP, integração ou liderança técnica",
+    "tracks": {
+      "architecture": "Arquitetura SAP",
+      "architectureDesc": "Estratégia, modernização, governança e desenho de solução.",
+      "code": "Código e qualidade",
+      "codeDesc": "ABAP, Fiori, clean code, performance e testes.",
+      "data": "Dados e integração",
+      "dataDesc": "APIs, BTP, automação, observabilidade e fluxos críticos."
+    },
+    "latestPosts": "Últimos posts",
+    "readArticle": "Ler artigo"
+  },
+  "investors": {
+    "title": "Centro de investidores e imprensa",
+    "subtitle": "Cofre corporativo",
+    "description": "Uma área dedicada a relatórios, press kits e materiais de governança para sustentar relações institucionais com clareza e consistência.",
+    "downloads": "Downloads",
+    "reports": "Relatórios disponíveis",
+    "reportsDesc": "Os downloads são arquivos demonstrativos em texto para validação de fluxo. Em produção, podem ser substituídos por PDFs, apresentações ou press kits reais.",
+    "download": "Baixar",
+    "contact": "Contato"
+  },
+  "language": {
+    "select": "Selecionar idioma",
+    "pt": "Português",
+    "en": "English",
+    "es": "Español"
+  },
+  "faq": {
+    "title": "Perguntas Frequentes",
+    "subtitle": "Respostas rápidas sobre nossos serviços e processo de trabalho."
+  },
+  "blog": {
+    "share": "Compartilhar"
+  },
+  "whatsapp": {
+    "balloon": {
+      "greeting": "Olá! 👋",
+      "message": "Tem dúvidas sobre transformação SAP? Converse conosco agora mesmo!"
+    },
+    "menu": {
+      "greeting": "Olá! 👋",
+      "question": "Como podemos ajudar?",
+      "footer": "Responderemos em breve"
+    }
+  },
+  "cookies": {
+    "banner": {
+      "title": "Consentimento de Cookies",
+      "description": "Utilizamos cookies para melhorar sua experiência, analisar o tráfego do site e personalizar conteúdo. Ao continuar navegando, você concorda com nossa política de cookies. Você pode ajustar suas preferências a qualquer momento.",
+      "acceptAll": "Aceitar Todos",
+      "rejectAll": "Rejeitar Todos",
+      "showDetails": "Ver Detalhes",
+      "hideDetails": "Ocultar Detalhes",
+      "privacyPolicy": "Política de Privacidade",
+      "legalText": "Conforme Lei Geral de Proteção de Dados (LGPD - Lei nº 13.709/2018)"
+    },
+    "types": {
+      "necessary": "Cookies Necessários",
+      "analytics": "Cookies de Análise",
+      "marketing": "Cookies de Marketing",
+      "preferences": "Cookies de Preferências"
+    },
+    "descriptions": {
+      "necessary": "Essenciais para o funcionamento do site. Não podem ser desativados.",
+      "analytics": "Nos ajudam a entender como você usa o site (Google Analytics 4). Totalmente anônimo.",
+      "marketing": "Utilizados para rastrear campanhas de marketing e publicidade direcionada.",
+      "preferences": "Permitem lembrar suas preferências (idioma, tema, etc)."
+    }
+  }
+}

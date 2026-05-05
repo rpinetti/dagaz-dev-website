@@ -1,0 +1,173 @@
+{
+  "nav": {
+    "sobre": "About",
+    "servicos": "Services",
+    "insights": "Insights",
+    "investidores": "Investors",
+    "busca": "Search"
+  },
+  "hero": {
+    "badge": "SAP • CODE • TRANSFORMATION",
+    "title": "The dawn of clarity amid code complexity.",
+    "description": "Dagaz.Dev is a brand forged to lead digital transformation in the SAP ecosystem. Inspired by the strength and wisdom of Vikings, we represent the dawn of clarity amid code complexity, precision in consulting, and courage in innovation.",
+    "cta": "Talk to the forge",
+    "sealLabel": "DAGAZ SEAL"
+  },
+  "industries": {
+    "title": "Industries we work with",
+    "description": "Experience in digital transformation for companies across diverse segments"
+  },
+  "about": {
+    "label": "About",
+    "title": "Philosophy: #CodingLikeVikings",
+    "description": "Our philosophy is not just a slogan, but a commitment to excellence, resilience, and the relentless pursuit of solutions that illuminate the path of our clients.",
+    "philosophy": {
+      "clarity": {
+        "title": "Clarity",
+        "description": "We dispel the darkness of complex problems with precise and well-documented solutions."
+      },
+      "transformation": {
+        "title": "Transformation",
+        "description": "We bring legacy systems to modernity, from ABAP to BTP, with safety and cadence."
+      },
+      "breakthrough": {
+        "title": "Breakthrough",
+        "description": "We seek the moment of insight that changes the trajectory of our clients."
+      }
+    },
+    "team": {
+      "title": "Who we are",
+      "description": "A team of SAP specialists, software architects, and technical leaders dedicated to excellence."
+    }
+  },
+  "services": {
+    "label": "Services",
+    "title": "Digital transformation services",
+    "description": "Specialized solutions for modernization, integration, and innovation in SAP environments.",
+    "items": {
+      "strategy": {
+        "title": "SAP Strategy",
+        "description": "Transformation roadmaps, governance, and architecture for the digital future."
+      },
+      "development": {
+        "title": "Development",
+        "description": "ABAP, Fiori, BTP, and integrations with forge-quality precision."
+      },
+      "integration": {
+        "title": "Integration",
+        "description": "APIs, events, automation, and critical flows with complete observability."
+      },
+      "consulting": {
+        "title": "Consulting",
+        "description": "Technical leadership, mentoring, and cultural transformation for teams."
+      }
+    }
+  },
+  "testimonials": {
+    "title": "What our clients say",
+    "description": "Stories of transformation and success in critical SAP environments."
+  },
+  "blog": {
+    "label": "Latest insights",
+    "title": "Publications from the forge",
+    "description": "Technical content, thought leadership, and SAP intelligence.",
+    "readMore": "Read insight",
+    "viewAll": "View all insights"
+  },
+  "investors": {
+    "label": "Investors & press",
+    "title": "An editorial vault for reports, press, and corporate trust.",
+    "description": "The section centralizes sample documents for download and can be connected to real Dagaz Dev materials when available.",
+    "openCenter": "Open full center"
+  },
+  "footer": {
+    "philosophy": "#CodingLikeVikings",
+    "tagline": "The dawn of clarity amid code complexity.",
+    "links": {
+      "about": "About",
+      "services": "Services",
+      "insights": "Insights",
+      "investors": "Investors",
+      "contact": "Contact"
+    },
+    "legal": {
+      "privacy": "Privacy",
+      "terms": "Terms",
+      "cookies": "Cookies"
+    }
+  },
+  "insights": {
+    "title": "Insights Center",
+    "subtitle": "Editorial Intelligence",
+    "description": "This area consolidates sample articles, thematic tracks, and specialized authors to support thought leadership and technical credibility.",
+    "search": "Search by SAP, ABAP, BTP, integration, or technical leadership",
+    "tracks": {
+      "architecture": "SAP Architecture",
+      "architectureDesc": "Strategy, modernization, governance, and solution design.",
+      "code": "Code and quality",
+      "codeDesc": "ABAP, Fiori, clean code, performance, and testing.",
+      "data": "Data and integration",
+      "dataDesc": "APIs, BTP, automation, observability, and critical flows."
+    },
+    "latestPosts": "Latest posts",
+    "readArticle": "Read article"
+  },
+  "investors": {
+    "title": "Investors and Press Center",
+    "subtitle": "Corporate Vault",
+    "description": "An area dedicated to reports, press kits, and governance materials to support institutional relationships with clarity and consistency.",
+    "downloads": "Downloads",
+    "reports": "Available reports",
+    "reportsDesc": "Downloads are sample text files for flow validation. In production, they can be replaced with PDFs, presentations, or real press kits.",
+    "download": "Download",
+    "contact": "Contact"
+  },
+  "language": {
+    "select": "Select language",
+    "pt": "Português",
+    "en": "English",
+    "es": "Español"
+  },
+  "faq": {
+    "title": "Frequently Asked Questions",
+    "subtitle": "Quick answers about our services and working process."
+  },
+  "blog": {
+    "share": "Share"
+  },
+  "whatsapp": {
+    "balloon": {
+      "greeting": "Hi there! 👋",
+      "message": "Questions about SAP transformation? Chat with us now!"
+    },
+    "menu": {
+      "greeting": "Hi there! 👋",
+      "question": "How can we help?",
+      "footer": "We'll respond shortly"
+    }
+  },
+  "cookies": {
+    "banner": {
+      "title": "Cookie Consent",
+      "description": "We use cookies to improve your experience, analyze site traffic, and personalize content. By continuing to browse, you agree to our cookie policy. You can adjust your preferences at any time.",
+      "acceptAll": "Accept All",
+      "rejectAll": "Reject All",
+      "showDetails": "Show Details",
+      "hideDetails": "Hide Details",
+      "privacyPolicy": "Privacy Policy",
+      "legalText": "In accordance with the General Data Protection Law (LGPD - Law No. 13,709/2018)"
+    },
+    "types": {
+      "necessary": "Necessary Cookies",
+      "analytics": "Analytics Cookies",
+      "marketing": "Marketing Cookies",
+      "preferences": "Preference Cookies"
+    },
+    "descriptions": {
+      "necessary": "Essential for website functionality. Cannot be disabled.",
+      "analytics": "Help us understand how you use the site (Google Analytics 4). Completely anonymous.",
+      "marketing": "Used to track marketing campaigns and targeted advertising.",
+      "preferences": "Allow us to remember your preferences (language, theme, etc)."
+    }
+  }
+}
