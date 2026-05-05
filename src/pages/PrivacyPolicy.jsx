@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import SEO from '../components/SEO';
 
 const PrivacyPolicy = () => {
   useEffect(() => {
@@ -8,6 +9,11 @@ const PrivacyPolicy = () => {
 
   return (
     <div className="container" style={{ padding: '6rem 0', maxWidth: '800px' }}>
+      <SEO 
+        title="Política de Privacidade" 
+        description="Leia a política de privacidade da Dagaz.Dev e saiba como cuidamos dos seus dados." 
+        url="/privacidade"
+      />
       <h1 style={{ color: 'var(--color-viking-gold)', marginBottom: '2rem' }}>Política de Privacidade</h1>
       <p style={{ color: 'var(--text-secondary)', marginBottom: '3rem' }}>Última atualização: 28 de Abril de 2026</p>
 

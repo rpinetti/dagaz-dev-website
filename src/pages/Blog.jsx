@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Search } from 'lucide-react';
 import Card from '../components/Card/Card';
+import SEO from '../components/SEO';
 import styles from './Blog.module.css';
 
 // Carrega todos os MDX eagerly para termos acesso imediato ao frontmatter
@@ -60,6 +61,11 @@ const Blog = () => {
 
   return (
     <div className="container" style={{ padding: '4rem 0' }}>
+      <SEO 
+        title={t('nav.blog')} 
+        description="Artigos, tutoriais e reflexões sobre SAP, desenvolvimento e carreira." 
+        url="/blog"
+      />
       <h1 style={{ marginBottom: '0.5rem' }}>{t('nav.blog')}</h1>
       <p style={{ color: 'var(--text-secondary)', marginBottom: '3rem' }}>
         Artigos, tutoriais e reflexões sobre SAP, desenvolvimento e carreira.

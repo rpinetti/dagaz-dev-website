@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import SEO from '../components/SEO';
 
 const TermsOfService = () => {
   useEffect(() => {
@@ -7,6 +8,11 @@ const TermsOfService = () => {
 
   return (
     <div className="container" style={{ padding: '6rem 0', maxWidth: '800px' }}>
+      <SEO 
+        title="Termos de Uso" 
+        description="Confira os termos de uso do portal Dagaz.Dev." 
+        url="/termos"
+      />
       <h1 style={{ color: 'var(--color-viking-gold)', marginBottom: '2rem' }}>Termos de Uso</h1>
       <p style={{ color: 'var(--text-secondary)', marginBottom: '3rem' }}>Última atualização: 28 de Abril de 2026</p>
 

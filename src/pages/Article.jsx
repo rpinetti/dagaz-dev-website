@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import Giscus from '@giscus/react';
 import { ArrowLeft } from 'lucide-react';
+import SEO from '../components/SEO';
 import styles from './Article.module.css';
 
 // Carrega os arquivos para obtermos o conteúdo do Markdown dinamicamente
@@ -39,6 +40,12 @@ const Article = () => {
 
   return (
     <div className="container" style={{ padding: '4rem 0', maxWidth: '800px' }}>
+      <SEO 
+        title={frontmatter.title} 
+        description={frontmatter.desc || frontmatter.description || frontmatter.summary} 
+        url={`/artigo/${id}`}
+        type="article"
+      />
       <Link to="/blog" className={styles.backLink}>
         <ArrowLeft size={20} /> {t('nav.blog')}
       </Link>

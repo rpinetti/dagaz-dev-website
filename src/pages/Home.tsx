@@ -7,6 +7,7 @@
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { LanguageTransitionWrapper } from "@/components/LanguageTransitionWrapper";
+import SEO from "@/components/SEO";
 import {
   ArrowDownToLine,
   ArrowRight,
@@ -169,6 +170,11 @@ export default function Home() {
 
   return (
     <>
+      <SEO 
+        title={t("hero.title")} 
+        description={t("hero.description")} 
+        url="/"
+      />
       <section className="relative overflow-hidden py-20 md:py-32">
           <div className="absolute inset-0 opacity-40"><img src={heroImage} alt="Hero" className="h-full w-full object-cover" /></div>
           <div className="absolute inset-0 bg-gradient-to-r from-[#050b12] via-[#06101b]/90 to-[#06101b]/60" />
