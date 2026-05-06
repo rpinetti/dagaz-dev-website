@@ -19,9 +19,18 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     fetch('/content/blog.json')
-      .then(res => res.json())
+      .then(res => {
+        if (!res.ok) throw new Error("Erro ao buscar JSON");
+        return res.json();
+      })
       .then(data => {
+        if (!data || typeof data !== 'object') {
+          setAllPosts([]);
+          return;
+        }
+
         const postsArray = Object.entries(data).flatMap(([lang, posts]: [string, any]) => {
+          if (!Array.isArray(posts)) return [];
           return posts.map((post: any) => ({
             id: post.id,
             lang,
@@ -32,7 +41,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         });
         setAllPosts(postsArray);
       })
-      .catch(err => console.error("Erro ao carregar blog.json no Layout:", err));
+      .catch(err => {
+        console.error("Erro ao carregar blog.json no Layout:", err);
+        setAllPosts([]);
+      });
   }, []);
 
   useEffect(() => {

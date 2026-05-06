@@ -44,7 +44,7 @@ export function FAQAccordion({ items, title, subtitle }: FAQAccordionProps) {
       )}
 
       <Accordion type="single" collapsible className="w-full space-y-3">
-        {items.map((item) => (
+        {(items || []).map((item) => (
           <AccordionItem
             key={item.id}
             value={item.id}

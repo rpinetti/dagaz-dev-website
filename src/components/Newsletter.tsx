@@ -34,12 +34,12 @@ export function Newsletter() {
                 <Mail className="h-6 w-6 text-cyan-400" />
               </div>
               <h2 className="mt-6 font-heading text-3xl font-bold text-foreground md:text-4xl">
-                {subscribed ? "Bem-vindo à Alcateia!" : "Assine o Insight Dagaz"}
+                {subscribed ? (t('newsletter.welcome') || "Bem-vindo à Alcateia!") : (t('newsletter.title') || "Assine o Insight Dagaz")}
               </h2>
               <p className="mt-4 text-muted-foreground">
                 {subscribed 
-                  ? "Sua jornada rumo à clareza SAP começou. Você receberá nossos pergaminhos em breve." 
-                  : "Receba estratégias SAP, novidades sobre BTP e Clean Code diretamente no seu e-mail."
+                  ? (t('newsletter.success') || "Sua jornada rumo à clareza SAP começou. Você receberá nossos pergaminhos em breve.") 
+                  : (t('newsletter.description') || "Receba estratégias SAP, novidades sobre BTP e Clean Code diretamente no seu e-mail.")
                 }
               </p>
             </div>
@@ -71,12 +71,12 @@ export function Newsletter() {
                     type="submit"
                     className="flex items-center justify-center gap-2 rounded-lg bg-cyan-400 px-8 py-4 font-heading text-sm font-bold uppercase tracking-widest text-[#071423] transition hover:bg-cyan-300"
                   >
-                    Assinar <Send className="h-4 w-4" />
+                    {t('newsletter.button') || "Assinar"} <Send className="h-4 w-4" />
                   </button>
                 </form>
               )}
               <p className="mt-4 text-center text-[10px] uppercase tracking-widest text-slate-600 md:text-left">
-                Prometemos: zero spam, apenas expertise técnica.
+                {t('newsletter.privacy') || "Prometemos: zero spam, apenas expertise técnica."}
               </p>
             </div>
           </div>

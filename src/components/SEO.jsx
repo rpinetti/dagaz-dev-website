@@ -9,11 +9,11 @@ const SEO = ({ title, description, url, type = 'website', image = '/og-image.jpg
   const currentLang = i18n.language || 'pt';
 
   const seo = {
-    title: title ? `${title} | DAGAZ.DEV` : siteName,
-    description: description || defaultDescription,
-    url: url ? `https://dagaz.dev${url}` : 'https://dagaz.dev/',
-    type,
-    image: image.startsWith('http') ? image : `https://dagaz.dev${image}`,
+    title: typeof title === 'string' && title ? `${title} | DAGAZ.DEV` : siteName,
+    description: typeof description === 'string' && description ? description : defaultDescription,
+    url: typeof url === 'string' && url ? `https://dagaz.dev${url}` : 'https://dagaz.dev/',
+    type: type || 'website',
+    image: (typeof image === 'string' && image?.startsWith('http')) ? image : `https://dagaz.dev${image || '/og-image.jpg'}`,
     locale: currentLang === 'en' ? 'en_US' : currentLang === 'es' ? 'es_ES' : 'pt_BR',
   };
 

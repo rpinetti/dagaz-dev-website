@@ -17,9 +17,19 @@ const Blog = () => {
   // Carrega os dados do blog dinamicamente
   useEffect(() => {
     fetch('/content/blog.json')
-      .then(res => res.json())
+      .then(res => {
+        if (!res.ok) throw new Error("Erro ao buscar JSON");
+        return res.json();
+      })
       .then(data => {
+        if (!data || typeof data !== 'object') {
+          setAllPosts([]);
+          setLoading(false);
+          return;
+        }
+
         const postsArray = Object.entries(data).flatMap(([lang, posts]) => {
+          if (!Array.isArray(posts)) return [];
           return posts.map(post => ({
             ...post,
             lang
@@ -30,6 +40,7 @@ const Blog = () => {
       })
       .catch(err => {
         console.error("Erro ao carregar blog.json:", err);
+        setAllPosts([]);
         setLoading(false);
       });
   }, []);
