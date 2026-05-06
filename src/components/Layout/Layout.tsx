@@ -6,19 +6,17 @@ import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { LanguageTransitionWrapper } from "@/components/LanguageTransitionWrapper";
 
-// Carrega posts para a busca global
-const mdxFiles = import.meta.glob('/src/content/blog/**/*.mdx', { eager: true });
-const allPosts = Object.entries(mdxFiles).map(([path, module]: [string, any]) => {
-  const pathParts = path.split('/');
-  const fileName = pathParts.pop() || '';
-  const lang = pathParts.pop() || '';
-  return {
-    id: fileName.replace('.mdx', ''),
+import blogData from "@/data/blog.json";
+
+// Processa posts para a busca global de forma leve
+const allPosts = Object.entries(blogData).flatMap(([lang, posts]: [string, any]) => {
+  return posts.map((post: any) => ({
+    id: post.id,
     lang,
-    title: module.frontmatter?.title || 'Título Indefinido',
-    category: module.frontmatter?.category || 'SAP',
-    desc: module.frontmatter?.desc || module.frontmatter?.description || ''
-  };
+    title: post.title,
+    category: post.category,
+    desc: post.desc || post.summary || ""
+  }));
 });
 
 export default function Layout({ children }: { children: React.ReactNode }) {

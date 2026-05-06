@@ -147,7 +147,13 @@ return (
     />
     <section className="relative overflow-hidden py-20 md:py-32">
       <div className="absolute inset-0 opacity-40">
-        <OptimizedImage src={heroImage} alt="Hero" className="h-full w-full object-cover" />
+        <OptimizedImage 
+          src={heroImage} 
+          alt="Hero" 
+          className="h-full w-full object-cover" 
+          loading="eager"
+          fetchPriority="high"
+        />
       </div>
       <div className="absolute inset-0 bg-gradient-to-r from-background via-background/90 to-background/60" />
       <div className="container relative z-10 grid gap-12 lg:grid-cols-[1fr_0.95fr] lg:items-center">
@@ -172,7 +178,13 @@ return (
           className="runic-panel p-8"
         >
           <div className="relative z-10 flex flex-col items-center justify-center gap-6">
-            <OptimizedImage src={runeSeal} alt="Runa Dagaz" className="h-32 w-32 object-contain" />
+            <OptimizedImage 
+              src={runeSeal} 
+              alt="Runa Dagaz" 
+              className="h-32 w-32 object-contain" 
+              loading="eager"
+              fetchPriority="high"
+            />
             <p className="font-code text-[10px] uppercase tracking-[0.24em] text-muted-foreground/80">{t("hero.sealLabel")}</p>
           </div>
         </motion.div>
