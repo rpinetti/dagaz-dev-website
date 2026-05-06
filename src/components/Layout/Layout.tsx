@@ -1,32 +1,68 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Search, Menu, X } from "lucide-react";
+import { Search, Menu, X, ArrowRight, FileText } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { LanguageTransitionWrapper } from "@/components/LanguageTransitionWrapper";
 
+// Carrega posts para a busca global
+const mdxFiles = import.meta.glob('/src/content/blog/**/*.mdx', { eager: true });
+const allPosts = Object.entries(mdxFiles).map(([path, module]: [string, any]) => {
+  const pathParts = path.split('/');
+  const fileName = pathParts.pop() || '';
+  const lang = pathParts.pop() || '';
+  return {
+    id: fileName.replace('.mdx', ''),
+    lang,
+    title: module.frontmatter?.title || 'Título Indefinido',
+    category: module.frontmatter?.category || 'SAP',
+    desc: module.frontmatter?.desc || module.frontmatter?.description || ''
+  };
+});
+
 export default function Layout({ children }: { children: React.ReactNode }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const filteredResults = searchQuery.trim().length > 1 
+    ? allPosts.filter(post => 
+        post.lang === (i18n.language || 'pt') && 
+        (post.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+         post.desc.toLowerCase().includes(searchQuery.toLowerCase()))
+      ).slice(0, 5)
+    : [];
+
+  const handleSearch = (e: React.FormEvent | React.KeyboardEvent) => {
+    if (e.type === 'keydown' && (e as React.KeyboardEvent).key !== 'Enter') return;
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/blog?search=${encodeURIComponent(searchQuery.trim())}`);
+      setSearchOpen(false);
+      setSearchQuery("");
+    }
+  };
 
   return (
     <LanguageTransitionWrapper animationType="fade-slide">
       <div className="min-h-screen bg-background text-foreground">
         <header className="sticky top-0 z-50 border-b border-white/10 bg-[#06101b]/80 backdrop-blur-2xl">
           <div className="container flex h-20 items-center justify-between">
-            <a href="/" className="inline-flex items-center gap-2 transition hover:opacity-80">
+            <Link to="/" className="inline-flex items-center gap-2 transition hover:opacity-80">
               <div className="flex h-8 w-8 items-center justify-center rounded border border-cyan-300/40 bg-cyan-300/10">
                 <span className="font-code text-sm font-bold text-[#00D9FF]">ᛞ</span>
               </div>
               <span className="font-heading font-bold text-white">Dagaz.Dev</span>
               <span className="font-code text-[9px] uppercase tracking-[0.24em] text-[#D4AF37]">#CodandoComoVikings</span>
-            </a>
+            </Link>
 
             <nav className="hidden items-center gap-7 font-code text-xs uppercase tracking-[0.18em] text-slate-300 lg:flex">
               <a className="transition hover:text-[#00D9FF]" href="/#sobre">{t("nav.sobre")}</a>
               <a className="transition hover:text-[#00D9FF]" href="/#servicos">{t("nav.servicos")}</a>
-              <a className="transition hover:text-[#00D9FF]" href="/blog">{t("nav.insights")}</a>
-              <a className="transition hover:text-[#00D9FF]" href="/contato">{t("nav.investidores")}</a>
+              <Link className="transition hover:text-[#00D9FF]" to="/blog">{t("nav.insights")}</Link>
+              <Link className="transition hover:text-[#00D9FF]" to="/contato">{t("nav.contato") || "Contato"}</Link>
             </nav>
 
             <div className="flex items-center gap-2">
@@ -44,12 +80,16 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <div className="border-t border-white/10 bg-[#06101b] p-4 lg:hidden">
               <div className="container grid gap-3 font-code text-xs uppercase tracking-[0.18em] text-slate-300">
                 {[
-                  [t("nav.sobre"), "/#sobre"],
-                  [t("nav.servicos"), "/#servicos"],
-                  [t("nav.insights"), "/blog"],
-                  [t("nav.investidores"), "/contato"],
-                ].map(([label, href]) => (
-                  <a key={label} href={href} onClick={() => setMenuOpen(false)} className="border border-white/8 p-3 transition hover:border-cyan-300/30 hover:text-[#00D9FF]">{label}</a>
+                  { label: t("nav.sobre"), href: "/#sobre", isLink: false },
+                  { label: t("nav.servicos"), href: "/#servicos", isLink: false },
+                  { label: t("nav.insights"), href: "/blog", isLink: true },
+                  { label: t("nav.contato") || "Contato", href: "/contato", isLink: true },
+                ].map(({ label, href, isLink }) => (
+                  isLink ? (
+                    <Link key={label} to={href} onClick={() => setMenuOpen(false)} className="border border-white/8 p-3 transition hover:border-cyan-300/30 hover:text-[#00D9FF]">{label}</Link>
+                  ) : (
+                    <a key={label} href={href} onClick={() => setMenuOpen(false)} className="border border-white/8 p-3 transition hover:border-cyan-300/30 hover:text-[#00D9FF]">{label}</a>
+                  )
                 ))}
                 <button onClick={() => { setSearchOpen(true); setMenuOpen(false); }} className="border border-cyan-200/25 p-3 text-left text-cyan-100">{t("nav.busca")}</button>
               </div>
@@ -58,11 +98,64 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         </header>
 
         {searchOpen && (
-          <div className="fixed inset-0 z-50 flex items-start justify-center bg-black/50 pt-20 backdrop-blur-sm">
-            <div className="w-full max-w-2xl">
-              <div className="relative border border-cyan-300/30 bg-[#06101b] p-6">
-                <input type="text" placeholder={t("nav.busca")} className="w-full bg-transparent font-code text-sm text-white placeholder-slate-500 outline-none" />
-                <button onClick={() => setSearchOpen(false)} className="absolute right-4 top-4"><X className="h-5 w-5" /></button>
+          <div className="fixed inset-0 z-50 flex items-start justify-center bg-black/80 pt-20 backdrop-blur-md">
+            <div className="w-full max-w-2xl px-4">
+              <div className="overflow-hidden border border-cyan-300/30 bg-[#06101b] shadow-2xl shadow-cyan-500/20">
+                <form onSubmit={handleSearch} className="relative border-b border-white/10 p-6">
+                  <Search className="absolute left-6 top-1/2 h-5 w-5 -translate-y-1/2 text-cyan-400/50" />
+                  <input 
+                    type="text" 
+                    autoFocus
+                    placeholder={t("nav.busca")} 
+                    className="w-full bg-transparent pl-10 font-code text-lg text-white placeholder-slate-500 outline-none"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                  />
+                  <button type="button" onClick={() => setSearchOpen(false)} className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 hover:text-white transition">
+                    <X className="h-5 w-5" />
+                  </button>
+                </form>
+
+                {searchQuery.trim().length > 1 && (
+                  <div className="max-h-[60vh] overflow-y-auto p-4">
+                    <p className="mb-4 font-code text-[10px] uppercase tracking-widest text-[#D4AF37]">Resultados da Forja</p>
+                    {filteredResults.length > 0 ? (
+                      <div className="grid gap-2">
+                        {filteredResults.map(post => (
+                          <Link 
+                            key={post.id} 
+                            to={`/artigo/${post.id}`}
+                            onClick={() => { setSearchOpen(false); setSearchQuery(""); }}
+                            className="group flex items-start gap-4 border border-white/5 bg-white/[0.02] p-4 transition hover:border-cyan-300/40 hover:bg-cyan-300/5"
+                          >
+                            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded border border-white/10 bg-white/5">
+                              <FileText className="h-5 w-5 text-slate-400 group-hover:text-cyan-400 transition" />
+                            </div>
+                            <div className="flex-1">
+                              <div className="flex items-center gap-3">
+                                <span className="font-code text-[9px] uppercase tracking-wider text-cyan-400/70">{post.category}</span>
+                                <h3 className="font-heading font-bold text-white group-hover:text-cyan-100 transition">{post.title}</h3>
+                              </div>
+                              <p className="mt-1 line-clamp-1 text-xs text-slate-400">{post.desc}</p>
+                            </div>
+                            <ArrowRight className="h-4 w-4 self-center text-slate-600 group-hover:text-cyan-400 transition" />
+                          </Link>
+                        ))}
+                        <Link 
+                          to={`/blog?search=${encodeURIComponent(searchQuery)}`}
+                          onClick={() => { setSearchOpen(false); setSearchQuery(""); }}
+                          className="mt-2 block py-2 text-center font-code text-[10px] uppercase tracking-widest text-slate-500 hover:text-cyan-400 transition"
+                        >
+                          Ver todos os resultados no blog &rarr;
+                        </Link>
+                      </div>
+                    ) : (
+                      <div className="py-10 text-center">
+                        <p className="text-sm text-slate-500 italic">Nenhum pergaminho encontrado para "{searchQuery}"</p>
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -100,8 +193,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               <div>
                 <p className="font-code text-[10px] uppercase tracking-[0.2em] text-[#D4AF37]">Legal</p>
                 <ul className="mt-4 space-y-2 text-sm text-slate-300">
-                  <li><a href="/privacidade" className="transition hover:text-[#00D9FF]">Privacidade</a></li>
-                  <li><a href="/termos" className="transition hover:text-[#00D9FF]">Termos</a></li>
+                  <li><Link to="/privacidade" className="transition hover:text-[#00D9FF]">Privacidade</Link></li>
+                  <li><Link to="/termos" className="transition hover:text-[#00D9FF]">Termos</Link></li>
                 </ul>
               </div>
             </div>

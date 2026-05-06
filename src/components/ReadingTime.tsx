@@ -10,7 +10,8 @@ import { Clock } from 'lucide-react';
  */
 
 interface ReadingTimeProps {
-  text: string;
+  text?: string;
+  minutes?: number;
   wordsPerMinute?: number;
   showIcon?: boolean;
   className?: string;
@@ -63,11 +64,15 @@ function formatReadingTime(minutes: number, language: string = 'pt'): string {
 
 export function ReadingTime({
   text,
+  minutes,
   wordsPerMinute = 200,
   showIcon = true,
   className = '',
 }: ReadingTimeProps) {
-  const readingTimeMinutes = calculateReadingTime(text, wordsPerMinute);
+  const readingTimeMinutes = minutes !== undefined 
+    ? minutes 
+    : (text ? calculateReadingTime(text, wordsPerMinute) : 0);
+    
   const language = document.documentElement.lang || 'pt';
   const formattedTime = formatReadingTime(readingTimeMinutes, language);
 

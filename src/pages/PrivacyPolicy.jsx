@@ -3,9 +3,6 @@ import { Link } from 'react-router-dom';
 import SEO from '../components/SEO';
 
 const PrivacyPolicy = () => {
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
 
   return (
     <div className="container" style={{ padding: '6rem 0', maxWidth: '800px' }}>

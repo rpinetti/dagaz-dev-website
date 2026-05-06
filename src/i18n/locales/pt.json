@@ -3,7 +3,7 @@
     "sobre": "Sobre",
     "servicos": "Serviços",
     "insights": "Insights",
-    "investidores": "Investidores",
+    "contato": "Contato",
     "busca": "Busca"
   },
   "hero": {
@@ -113,14 +113,19 @@
     "readArticle": "Ler artigo"
   },
   "investors": {
-    "title": "Centro de investidores e imprensa",
+    "label": "Investidores & imprensa",
+    "title": "Um cofre editorial para relatórios, imprensa e confiança empresarial.",
     "subtitle": "Cofre corporativo",
-    "description": "Uma área dedicada a relatórios, press kits e materiais de governança para sustentar relações institucionais com clareza e consistência.",
-    "downloads": "Downloads",
-    "reports": "Relatórios disponíveis",
-    "reportsDesc": "Os downloads são arquivos demonstrativos em texto para validação de fluxo. Em produção, podem ser substituídos por PDFs, apresentações ou press kits reais.",
-    "download": "Baixar",
-    "contact": "Contato"
+    "description": "Acesse relatórios, press kits e materiais de governança para relações institucionais com clareza e consistência.",
+    "openCenter": "Abrir centro completo",
+    "explore": "Explorar",
+    "latest": "Últimas publicações",
+    "categories": {
+      "governance": "Governança",
+      "indicators": "Indicadores",
+      "reports": "Relatórios",
+      "market": "Mercado"
+    }
   },
   "language": {
     "select": "Selecionar idioma",
@@ -168,6 +173,25 @@
       "analytics": "Nos ajudam a entender como você usa o site (Google Analytics 4). Totalmente anônimo.",
       "marketing": "Utilizados para rastrear campanhas de marketing e publicidade direcionada.",
       "preferences": "Permitem lembrar suas preferências (idioma, tema, etc)."
+    }
+  },
+  "contactSection": {
+    "label": "Fale conosco",
+    "title": "Pronto para transformar sua jornada SAP?",
+    "description": "Entre em contato com nosso time de especialistas. Responderemos em até 24 horas com uma proposta personalizada para seu projeto.",
+    "features": {
+      "quickResponse": {
+        "title": "Resposta rápida",
+        "description": "Entraremos em contato em até 24 horas"
+      },
+      "freeConsultation": {
+        "title": "Consultoria gratuita",
+        "description": "Análise inicial sem compromisso"
+      },
+      "dedicatedExperts": {
+        "title": "Especialistas dedicados",
+        "description": "Time com 15+ anos de experiência SAP"
+      }
     }
   }
 }

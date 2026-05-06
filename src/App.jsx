@@ -4,6 +4,7 @@ import Layout from './components/Layout/Layout';
 import Home from './pages/Home';
 import Blog from './pages/Blog';
 import Article from './pages/Article';
+import Contact from './pages/Contact';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsOfService from './pages/TermsOfService';
 
@@ -17,6 +18,7 @@ import { WhatsAppButton } from "@/components/WhatsAppButton";
 import { CookieConsentBanner } from "@/components/CookieConsentBanner";
 
 import SEO from './components/SEO';
+import { ScrollToTop } from './components/ScrollToTop';
 
 function App() {
   return (
@@ -26,6 +28,7 @@ function App() {
           <ThemeProvider defaultTheme="light">
             <TooltipProvider>
               <BrowserRouter>
+                <ScrollToTop />
                 <Layout>
                   <Routes>
                     <Route path="/" element={<Home />} />
@@ -38,13 +41,7 @@ function App() {
                         <p>Em construção...</p>
                       </div>
                     } />
-                    <Route path="/contato" element={
-                      <div className="container" style={{marginTop: '2rem'}}>
-                        <SEO title="Contato" description="Entre em contato com a Dagaz.Dev para consultoria e mentoria SAP." url="/contato" />
-                        <h1>Contato</h1>
-                        <p>Em construção...</p>
-                      </div>
-                    } />
+                    <Route path="/contato" element={<Contact />} />
                     <Route path="/privacidade" element={<PrivacyPolicy />} />
                     <Route path="/termos" element={<TermsOfService />} />
                     <Route path="*" element={

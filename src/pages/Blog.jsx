@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useSearchParams } from 'react-router-dom';
 import { Search } from 'lucide-react';
 import Card from '../components/Card/Card';
 import SEO from '../components/SEO';
@@ -30,8 +31,27 @@ const allPosts = Object.entries(mdxFiles).map(([path, module]) => {
 
 const Blog = () => {
   const { t, i18n } = useTranslation();
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchTerm, setSearchTerm] = useState(searchParams.get('search') || '');
   const [activeCategory, setActiveCategory] = useState('all');
+
+  // Sincroniza o termo de busca quando o parâmetro da URL muda
+  useEffect(() => {
+    const query = searchParams.get('search');
+    if (query !== null) {
+      setSearchTerm(query);
+    }
+  }, [searchParams]);
+
+  const handleSearchChange = (e) => {
+    const value = e.target.value;
+    setSearchTerm(value);
+    if (value) {
+      setSearchParams({ search: value });
+    } else {
+      setSearchParams({});
+    }
+  };
 
   const categories = [
     { key: 'all', label: t('blog.categories.all') },
@@ -79,7 +99,7 @@ const Blog = () => {
           placeholder={t('blog.search_placeholder')}
           className={styles.searchInput}
           value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
+          onChange={handleSearchChange}
         />
       </div>
 

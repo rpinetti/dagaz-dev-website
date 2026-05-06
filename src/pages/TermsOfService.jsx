@@ -2,9 +2,6 @@ import React, { useEffect } from 'react';
 import SEO from '../components/SEO';
 
 const TermsOfService = () => {
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
 
   return (
     <div className="container" style={{ padding: '6rem 0', maxWidth: '800px' }}>

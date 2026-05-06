@@ -3,7 +3,7 @@
     "sobre": "About",
     "servicos": "Services",
     "insights": "Insights",
-    "investidores": "Investors",
+    "contato": "Contact",
     "busca": "Search"
   },
   "hero": {
@@ -113,14 +113,19 @@
     "readArticle": "Read article"
   },
   "investors": {
-    "title": "Investors and Press Center",
+    "label": "Investors & Press",
+    "title": "An editorial vault for reports, press, and corporate trust.",
     "subtitle": "Corporate Vault",
-    "description": "An area dedicated to reports, press kits, and governance materials to support institutional relationships with clarity and consistency.",
-    "downloads": "Downloads",
-    "reports": "Available reports",
-    "reportsDesc": "Downloads are sample text files for flow validation. In production, they can be replaced with PDFs, presentations, or real press kits.",
-    "download": "Download",
-    "contact": "Contact"
+    "description": "Access reports, press kits, and governance materials for institutional relations with clarity and consistency.",
+    "openCenter": "Open Full Center",
+    "explore": "Explore",
+    "latest": "Latest Publications",
+    "categories": {
+      "governance": "Governance",
+      "indicators": "Indicators",
+      "reports": "Reports",
+      "market": "Market"
+    }
   },
   "language": {
     "select": "Select language",
@@ -168,6 +173,25 @@
       "analytics": "Help us understand how you use the site (Google Analytics 4). Completely anonymous.",
       "marketing": "Used to track marketing campaigns and targeted advertising.",
       "preferences": "Allow us to remember your preferences (language, theme, etc)."
+    }
+  },
+  "contactSection": {
+    "label": "Talk to us",
+    "title": "Ready to transform your SAP journey?",
+    "description": "Get in touch with our team of specialists. We will respond within 24 hours with a personalized proposal for your project.",
+    "features": {
+      "quickResponse": {
+        "title": "Quick response",
+        "description": "We will contact you within 24 hours"
+      },
+      "freeConsultation": {
+        "title": "Free consultation",
+        "description": "Initial analysis without commitment"
+      },
+      "dedicatedExperts": {
+        "title": "Dedicated specialists",
+        "description": "Team with 15+ years of SAP experience"
+      }
     }
   }
 }

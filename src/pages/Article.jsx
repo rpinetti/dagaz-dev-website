@@ -14,11 +14,6 @@ const Article = () => {
   const { t, i18n } = useTranslation();
   const currentLang = i18n.language || 'pt';
 
-  // Scroll to top on mount
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
   // Procura o arquivo exato baseado no idioma e no ID da URL
   const postPath = `/src/content/blog/${currentLang}/${id}.mdx`;
   const PostModule = mdxFiles[postPath];
