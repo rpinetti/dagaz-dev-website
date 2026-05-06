@@ -68,11 +68,19 @@
     "description": "Histórias de transformação e sucesso em ambientes SAP críticos."
   },
   "blog": {
-    "label": "Últimos insights",
-    "title": "Publicações da forja",
-    "description": "Conteúdo técnico, liderança de pensamento e inteligência SAP.",
-    "readMore": "Ler insight",
-    "viewAll": "Ver todos os insights"
+    "label": "Conhecimento Ancestral",
+    "title": "A Forja de Insights",
+    "description": "Estratégias SAP, arquitetura limpa e liderança técnica forjadas no fogo da experiência.",
+    "readMore": "DESBRAVAR",
+    "viewAll": "Ver todos os insights",
+    "share": "Compartilhar",
+    "categories": {
+      "all": "Todos os Reinos",
+      "sap": "Domínios SAP",
+      "abap": "Arte do Código",
+      "career": "Jornada do Guerreiro",
+      "leadership": "Comando & Estratégia"
+    }
   },
   "investors": {
     "label": "Investidores & imprensa",
@@ -136,9 +144,6 @@
   "faq": {
     "title": "Perguntas Frequentes",
     "subtitle": "Respostas rápidas sobre nossos serviços e processo de trabalho."
-  },
-  "blog": {
-    "share": "Compartilhar"
   },
   "whatsapp": {
     "balloon": {

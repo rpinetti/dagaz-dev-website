@@ -68,11 +68,19 @@
     "description": "Stories of transformation and success in critical SAP environments."
   },
   "blog": {
-    "label": "Latest insights",
-    "title": "Publications from the forge",
-    "description": "Technical content, thought leadership, and SAP intelligence.",
-    "readMore": "Read insight",
-    "viewAll": "View all insights"
+    "label": "Ancestral Knowledge",
+    "title": "The Forge of Insights",
+    "description": "SAP strategies, clean architecture, and technical leadership forged in the fire of experience.",
+    "readMore": "EXPLORE",
+    "viewAll": "View all insights",
+    "share": "Share",
+    "categories": {
+      "all": "All Realms",
+      "sap": "SAP Domains",
+      "abap": "Code Craft",
+      "career": "Warrior's Journey",
+      "leadership": "Command & Strategy"
+    }
   },
   "investors": {
     "label": "Investors & press",
@@ -136,9 +144,6 @@
   "faq": {
     "title": "Frequently Asked Questions",
     "subtitle": "Quick answers about our services and working process."
-  },
-  "blog": {
-    "share": "Share"
   },
   "whatsapp": {
     "balloon": {
