@@ -46,7 +46,6 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { motion } from "framer-motion";
 import { OptimizedImage } from "@/components/OptimizedImage";
 import testimonialsData from "@/data/testimonials.json";
-import testimonialsData from "@/data/testimonials.json";
 // blogData agora é carregado dinamicamente no componente
 
 const heroImage = "https://d2xsxph8kpxj0f.cloudfront.net/310519663628243590/XyUenGTrKRhDXVbbUSRY3m/dagaz-hero-cyber-forge-8PDWLYRFL4xH3A669uxTVa.webp";
