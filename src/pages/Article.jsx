@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import Giscus from '@giscus/react';
@@ -8,53 +8,23 @@ import styles from './Article.module.css';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import blogData from '../data/blog.json';
+import blogContent from '../data/blogContent.js';
 import { OptimizedImage } from '@/components/OptimizedImage';
 import { ShareButtons } from '@/components/ShareButtons';
 
 const Article = () => {
   const { id } = useParams();
   const { t, i18n } = useTranslation();
-  const [postContent, setPostContent] = React.useState('');
-  const [loading, setLoading] = React.useState(true);
   const currentLang = i18n.language || 'pt';
 
-  // Encontra os metadados no JSON
+  // Encontra os metadados no JSON (build-time)
   const postsInLang = blogData[currentLang] || blogData['pt'];
   const postMetadata = postsInLang.find(p => p.id === id);
 
-  useEffect(() => {
-    if (postMetadata) {
-      setLoading(true);
-      // Garante que o caminho não tenha duplicidade de barras e seja relativo à raiz
-      const fetchUrl = postMetadata.contentFile.startsWith('/') 
-        ? postMetadata.contentFile 
-        : `/${postMetadata.contentFile}`;
-        
-      fetch(fetchUrl)
-        .then(res => {
-          if (!res.ok) throw new Error(`Status: ${res.status}`);
-          return res.text();
-        })
-        .then(text => {
-          setPostContent(text);
-          setLoading(false);
-        })
-        .catch(err => {
-          console.error("Erro ao carregar o artigo:", err);
-          setPostContent("# Erro ao carregar o pergaminho\nO conteúdo não pôde ser recuperado do servidor.");
-          setLoading(false);
-        });
-    }
-  }, [postMetadata]);
-
-  if (loading) {
-    return (
-      <div className="container" style={{ padding: '8rem 0', textAlign: 'center' }}>
-        <div className="animate-spin inline-block w-8 h-8 border-4 border-primary border-t-transparent rounded-full mb-4"></div>
-        <p className="text-muted-foreground uppercase tracking-widest text-xs font-code">Invocando pergaminho...</p>
-      </div>
-    );
-  }
+  // Busca o conteúdo do bundle gerado (sem fetch runtime)
+  const contentKey = `${currentLang}/${id}`;
+  const fallbackKey = `pt/${id}`;
+  const postContent = blogContent[contentKey] || blogContent[fallbackKey] || '';
 
   if (!postMetadata || !postContent) {
     return (
@@ -74,7 +44,7 @@ const Article = () => {
     "@type": "BlogPosting",
     "headline": postMetadata.title,
     "description": postMetadata.desc || postMetadata.summary,
-    "image": `https://dagaz.dev${postMetadata.image || '/og-image.jpg'}`,
+    "image": `https://dagaz.dev${postMetadata.image?.startsWith('http') ? '' : postMetadata.image || '/og-image.jpg'}`,
     "datePublished": postMetadata.date,
     "author": {
       "@type": "Person",
@@ -138,24 +108,19 @@ const Article = () => {
         <h3 className={styles.commentsTitle}>A Mesa Redonda</h3>
         <p className={styles.commentsDesc}>Deixe seu comentário, dúvida ou adicione sua experiência sobre o tema abaixo.</p>
         
-        {/*
-          IMPORTANTE: Configuração do Giscus!
-          Você precisará instalar o App do Giscus no seu repositório GitHub e pegar as chaves.
-          Acesse: https://giscus.app/pt para gerar as suas props exatas.
-        */}
         <div className={styles.giscusWrapper}>
           <Giscus
             id="comments"
-            repo="SEU_USUARIO/SEU_REPOSITORIO"
-            repoId="R_kgDOM_PLACEHOLDER"
-            category="Announcements"
-            categoryId="DIC_kwDOM_PLACEHOLDER"
+            repo="rpinetti/dagaz-dev-website"
+            repoId="R_kgDOSU2rDg"
+            category="General"
+            categoryId="DIC_kwDOSU2rDs4C8dVo"
             mapping="pathname"
-            term="Bem-vindo ao Blog da Dagaz!"
+            strict="0"
             reactionsEnabled="1"
             emitMetadata="0"
             inputPosition="top"
-            theme="transparent_dark"
+            theme="preferred_color_scheme"
             lang="pt"
             loading="lazy"
           />

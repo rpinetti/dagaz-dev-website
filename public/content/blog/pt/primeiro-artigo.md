@@ -1,3 +1,15 @@
+---
+title: "A Jornada da Forja: Codando como Vikings"
+date: "2026-08-20"
+author: "Sigurd"
+category: "Domínios SAP"
+categoryKey: "sap"
+readingTime: 3
+summary: "Seja bem-vindo ao primeiro artigo oficial do Projeto DAGAZ. Explore a filosofia por trás do desenvolvimento de alta performance."
+desc: "Seja bem-vindo ao primeiro artigo oficial do Projeto DAGAZ. Explore a filosofia por trás do desenvolvimento de alta performance."
+image: "https://d2xsxph8kpxj0f.cloudfront.net/310519663628243590/XyUenGTrKRhDXVbbUSRY3m/dagaz-insights-editorial-Zpdxpe4MKtf2JAEDbSqKEX.webp"
+---
+
 # Bem-vindo à Forja
 
 Guerreiro, seja muito bem-vindo ao primeiro artigo oficial do **Projeto DAGAZ**. 

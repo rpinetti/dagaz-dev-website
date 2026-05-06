@@ -141,3 +141,6 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vite/
+
+# Auto-generated pelo bundle-blog.js (regenerado no build)
+src/data/blogContent.js
