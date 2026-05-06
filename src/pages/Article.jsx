@@ -33,6 +33,32 @@ const Article = () => {
   const PostContent = PostModule.default;
   const frontmatter = PostModule.frontmatter || {};
 
+  // Schema de Artigo (JSON-LD) para SEO
+  const articleSchema = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": frontmatter.title,
+    "description": frontmatter.desc || frontmatter.description || frontmatter.summary,
+    "image": `https://dagaz.dev${frontmatter.image || '/og-image.jpg'}`,
+    "datePublished": frontmatter.date,
+    "author": {
+      "@type": "Person",
+      "name": frontmatter.author || "Caio Dagaz"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Dagaz Dev",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://dagaz.dev/favicon.svg"
+      }
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": `https://dagaz.dev/artigo/${id}`
+    }
+  };
+
   return (
     <div className="container" style={{ padding: '4rem 0', maxWidth: '800px' }}>
       <SEO 
@@ -40,6 +66,7 @@ const Article = () => {
         description={frontmatter.desc || frontmatter.description || frontmatter.summary} 
         url={`/artigo/${id}`}
         type="article"
+        schema={articleSchema}
       />
       <Link to="/blog" className={styles.backLink}>
         <ArrowLeft size={20} /> {t('nav.blog')}

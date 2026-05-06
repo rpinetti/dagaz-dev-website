@@ -34,11 +34,11 @@ export function FAQAccordion({ items, title, subtitle }: FAQAccordionProps) {
     <div className="w-full">
       {title && (
         <div className="mb-10">
-          <h2 className="font-heading text-4xl font-extrabold text-white md:text-5xl">
+          <h2 className="font-heading text-4xl font-extrabold text-foreground md:text-5xl">
             {title}
           </h2>
           {subtitle && (
-            <p className="mt-4 text-lg leading-8 text-slate-300">{subtitle}</p>
+            <p className="mt-4 text-lg leading-8 text-muted-foreground">{subtitle}</p>
           )}
         </div>
       )}
@@ -48,7 +48,7 @@ export function FAQAccordion({ items, title, subtitle }: FAQAccordionProps) {
           <AccordionItem
             key={item.id}
             value={item.id}
-            className="border border-white/10 bg-white/[0.03] transition hover:border-cyan-300/30 hover:bg-white/[0.05]"
+            className="border border-border bg-card/50 transition hover:border-primary/30 hover:bg-card"
           >
             <AccordionTrigger
               onClick={() => setExpandedId(expandedId === item.id ? null : item.id)}
@@ -61,7 +61,7 @@ export function FAQAccordion({ items, title, subtitle }: FAQAccordionProps) {
                       {item.category}
                     </p>
                   )}
-                  <p className="font-heading text-lg font-bold text-white group-hover:text-cyan-100 transition">
+                  <p className="font-heading text-lg font-bold text-foreground group-hover:text-primary transition">
                     {item.question}
                   </p>
                 </div>
@@ -73,8 +73,8 @@ export function FAQAccordion({ items, title, subtitle }: FAQAccordionProps) {
               </div>
             </AccordionTrigger>
             <AccordionContent className="px-6 pb-4 pt-0">
-              <div className="border-t border-white/10 pt-4">
-                <p className="text-base leading-7 text-slate-300">
+              <div className="border-t border-border pt-4">
+                <p className="text-base leading-7 text-muted-foreground">
                   {item.answer}
                 </p>
               </div>

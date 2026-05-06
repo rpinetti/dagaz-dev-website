@@ -2,7 +2,7 @@ import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
 
-const SEO = ({ title, description, url, type = 'website', image = '/og-image.jpg' }) => {
+const SEO = ({ title, description, url, type = 'website', image = '/og-image.jpg', schema }) => {
   const { i18n } = useTranslation();
   const siteName = 'DAGAZ.DEV | Codando Como Vikings';
   const defaultDescription = 'DAGAZ.DEV - Codando como Vikings. Consultoria SAP e Desenvolvimento.';
@@ -17,12 +17,30 @@ const SEO = ({ title, description, url, type = 'website', image = '/og-image.jpg
     locale: currentLang === 'en' ? 'en_US' : currentLang === 'es' ? 'es_ES' : 'pt_BR',
   };
 
+  // Schema de Organização padrão
+  const defaultSchema = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Dagaz Dev",
+    "url": "https://dagaz.dev",
+    "logo": "https://dagaz.dev/favicon.svg",
+    "sameAs": [
+      "https://linkedin.com/company/dagaz-dev",
+      "https://instagram.com/dagaz.dev"
+    ]
+  };
+
   return (
     <Helmet>
       {/* Standard metadata tags */}
       <title>{seo.title}</title>
       <meta name="description" content={seo.description} />
       <link rel="canonical" href={seo.url} />
+
+      {/* Structured Data */}
+      <script type="application/ld+json">
+        {JSON.stringify(schema || defaultSchema)}
+      </script>
 
       {/* Open Graph / Facebook / LinkedIn / Instagram */}
       <meta property="og:type" content={seo.type} />

@@ -1,6 +1,6 @@
 .card {
-  background-color: rgba(26, 26, 26, 0.7); /* Forge Gray com transparência */
-  border: 1px solid rgba(0, 217, 255, 0.1); /* Borda sutil Glacial Cyan */
+  background-color: var(--card);
+  border: 1px solid var(--border);
   border-radius: 8px;
   padding: 1.5rem;
   transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
@@ -16,8 +16,8 @@
 
 .clickable:hover {
   transform: translateY(-5px);
-  border-color: rgba(0, 217, 255, 0.4);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5), 0 0 15px rgba(0, 217, 255, 0.1);
+  border-color: var(--primary);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
 }
 
 .header {
@@ -48,18 +48,18 @@
 }
 
 .title {
-  color: var(--color-runic-white);
+  color: var(--foreground);
   font-size: 1.25rem;
   margin-bottom: 0.25rem;
 }
 
 .subtitle {
-  color: var(--text-secondary);
-  font-family: var(--font-mono);
+  color: var(--muted-foreground);
+  font-family: var(--font-code);
   font-size: 0.875rem;
 }
 
 .body {
-  color: var(--text-secondary);
+  color: var(--muted-foreground);
   flex-grow: 1;
 }

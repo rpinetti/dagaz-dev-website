@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Search, Menu, X, ArrowRight, FileText } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { LanguageTransitionWrapper } from "@/components/LanguageTransitionWrapper";
 
 // Carrega posts para a busca global
@@ -26,6 +27,15 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const filteredResults = searchQuery.trim().length > 1 
     ? allPosts.filter(post => 
@@ -48,17 +58,19 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <LanguageTransitionWrapper animationType="fade-slide">
       <div className="min-h-screen bg-background text-foreground">
-        <header className="sticky top-0 z-50 border-b border-white/10 bg-[#06101b]/80 backdrop-blur-2xl">
-          <div className="container flex h-20 items-center justify-between">
+        <header className={`sticky top-0 z-50 border-b border-white/10 transition-all duration-300 ${
+          scrolled ? "h-16 bg-background/95 backdrop-blur-3xl" : "h-20 bg-background/80 backdrop-blur-2xl"
+        }`}>
+          <div className="container flex h-full items-center justify-between">
             <Link to="/" className="inline-flex items-center gap-2 transition hover:opacity-80">
               <div className="flex h-8 w-8 items-center justify-center rounded border border-cyan-300/40 bg-cyan-300/10">
                 <span className="font-code text-sm font-bold text-[#00D9FF]">ᛞ</span>
               </div>
-              <span className="font-heading font-bold text-white">Dagaz.Dev</span>
+              <span className="font-heading font-bold text-foreground">Dagaz.Dev</span>
               <span className="font-code text-[9px] uppercase tracking-[0.24em] text-[#D4AF37]">#CodandoComoVikings</span>
             </Link>
 
-            <nav className="hidden items-center gap-7 font-code text-xs uppercase tracking-[0.18em] text-slate-300 lg:flex">
+            <nav className="hidden items-center gap-7 font-code text-xs uppercase tracking-[0.18em] text-muted-foreground lg:flex">
               <a className="transition hover:text-[#00D9FF]" href="/#sobre">{t("nav.sobre")}</a>
               <a className="transition hover:text-[#00D9FF]" href="/#servicos">{t("nav.servicos")}</a>
               <Link className="transition hover:text-[#00D9FF]" to="/blog">{t("nav.insights")}</Link>
@@ -66,19 +78,25 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </nav>
 
             <div className="flex items-center gap-2">
-              <button onClick={() => setSearchOpen(true)} className="hidden items-center gap-2 border border-cyan-200/25 px-4 py-2 font-code text-xs uppercase tracking-[0.18em] text-cyan-100 transition hover:bg-cyan-300/10 sm:flex">
+              <button onClick={() => setSearchOpen(true)} className="hidden items-center gap-2 border border-cyan-200/25 px-4 py-2 font-code text-xs uppercase tracking-[0.18em] text-cyan-600 dark:text-cyan-100 transition hover:bg-cyan-300/10 sm:flex">
                 <Search className="h-4 w-4" /> {t("nav.busca")}
               </button>
+              <ThemeToggle />
               <LanguageSwitcher />
-              <button onClick={() => setMenuOpen(!menuOpen)} className="flex items-center gap-2 lg:hidden">
+              <button 
+                onClick={() => setMenuOpen(!menuOpen)} 
+                className="flex items-center gap-2 lg:hidden"
+                aria-label={menuOpen ? "Fechar menu" : "Abrir menu"}
+                aria-expanded={menuOpen}
+              >
                 {menuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
               </button>
             </div>
           </div>
 
           {menuOpen && (
-            <div className="border-t border-white/10 bg-[#06101b] p-4 lg:hidden">
-              <div className="container grid gap-3 font-code text-xs uppercase tracking-[0.18em] text-slate-300">
+            <div className="border-t border-white/10 bg-background p-4 lg:hidden">
+              <div className="container grid gap-3 font-code text-xs uppercase tracking-[0.18em] text-muted-foreground">
                 {[
                   { label: t("nav.sobre"), href: "/#sobre", isLink: false },
                   { label: t("nav.servicos"), href: "/#servicos", isLink: false },
@@ -98,20 +116,25 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         </header>
 
         {searchOpen && (
-          <div className="fixed inset-0 z-50 flex items-start justify-center bg-black/80 pt-20 backdrop-blur-md">
+          <div className="fixed inset-0 z-50 flex items-start justify-center bg-black/60 pt-20 backdrop-blur-md">
             <div className="w-full max-w-2xl px-4">
-              <div className="overflow-hidden border border-cyan-300/30 bg-[#06101b] shadow-2xl shadow-cyan-500/20">
+              <div className="overflow-hidden border border-cyan-300/30 bg-background shadow-2xl shadow-cyan-500/20">
                 <form onSubmit={handleSearch} className="relative border-b border-white/10 p-6">
                   <Search className="absolute left-6 top-1/2 h-5 w-5 -translate-y-1/2 text-cyan-400/50" />
                   <input 
                     type="text" 
                     autoFocus
                     placeholder={t("nav.busca")} 
-                    className="w-full bg-transparent pl-10 font-code text-lg text-white placeholder-slate-500 outline-none"
+                    className="w-full bg-transparent pl-10 font-code text-lg text-foreground placeholder-slate-500 outline-none"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                   />
-                  <button type="button" onClick={() => setSearchOpen(false)} className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 hover:text-white transition">
+                   <button 
+                    type="button" 
+                    onClick={() => setSearchOpen(false)} 
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 hover:text-white transition"
+                    aria-label="Fechar busca"
+                  >
                     <X className="h-5 w-5" />
                   </button>
                 </form>
@@ -133,8 +156,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                             </div>
                             <div className="flex-1">
                               <div className="flex items-center gap-3">
-                                <span className="font-code text-[9px] uppercase tracking-wider text-cyan-400/70">{post.category}</span>
-                                <h3 className="font-heading font-bold text-white group-hover:text-cyan-100 transition">{post.title}</h3>
+                                <span className="font-code text-[9px] uppercase tracking-wider text-cyan-600 dark:text-cyan-400/70">{post.category}</span>
+                                <h3 className="font-heading font-bold text-foreground group-hover:text-cyan-600 transition">{post.title}</h3>
                               </div>
                               <p className="mt-1 line-clamp-1 text-xs text-slate-400">{post.desc}</p>
                             </div>
