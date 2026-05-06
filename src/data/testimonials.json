@@ -1,0 +1,62 @@
+{
+  "pt": [
+    {
+      "quote": "Dagaz transformou nossa jornada SAP com clareza estratégica e execução impecável.",
+      "author": "CEO, Empresa de Varejo",
+      "role": "Diretor de Transformação",
+      "order": 1
+    },
+    {
+      "quote": "A expertise técnica em BTP e Clean ABAP da Dagaz é o que faltava para escalarmos nossos sistemas.",
+      "author": "CTO, Logística Global",
+      "role": "Gerente de TI",
+      "order": 2
+    },
+    {
+      "quote": "Foco em resultados e transparência total. Uma parceria que gerou valor desde o primeiro dia.",
+      "author": "Head de Inovação",
+      "role": "Líder de Implementação",
+      "order": 3
+    }
+  ],
+  "en": [
+    {
+      "quote": "Dagaz transformed our SAP journey with strategic clarity and flawless execution.",
+      "author": "CEO, Retail Company",
+      "role": "Transformation Director",
+      "order": 1
+    },
+    {
+      "quote": "Dagaz's technical expertise in BTP and Clean ABAP was exactly what we needed to scale our systems.",
+      "author": "CTO, Global Logistics",
+      "role": "IT Manager",
+      "order": 2
+    },
+    {
+      "quote": "Results-oriented and total transparency. A partnership that generated value from day one.",
+      "author": "Head of Innovation",
+      "role": "Implementation Lead",
+      "order": 3
+    }
+  ],
+  "es": [
+    {
+      "quote": "Dagaz transformó nuestro viaje SAP con claridad estratégica y ejecución impecable.",
+      "author": "CEO, Empresa de Retail",
+      "role": "Director de Transformación",
+      "order": 1
+    },
+    {
+      "quote": "La experiencia técnica de Dagaz em BTP y Clean ABAP era justo lo que necesitábamos para escalar nuestros sistemas.",
+      "author": "CTO, Logística Global",
+      "role": "Gerente de TI",
+      "order": 2
+    },
+    {
+      "quote": "Enfoque en resultados y transparencia total. Una asociación que generó valor desde el primer día.",
+      "author": "Head de Innovación",
+      "role": "Líder de Implementación",
+      "order": 3
+    }
+  ]
+}

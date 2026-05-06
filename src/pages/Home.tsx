@@ -45,6 +45,7 @@ import { Newsletter } from "@/components/Newsletter";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { motion } from "framer-motion";
 import { OptimizedImage } from "@/components/OptimizedImage";
+import testimonialsData from "@/data/testimonials.json";
 
 const heroImage = "https://d2xsxph8kpxj0f.cloudfront.net/310519663628243590/XyUenGTrKRhDXVbbUSRY3m/dagaz-hero-cyber-forge-8PDWLYRFL4xH3A669uxTVa.webp";
 const runeSeal = "https://d2xsxph8kpxj0f.cloudfront.net/310519663628243590/XyUenGTrKRhDXVbbUSRY3m/dagaz-rune-seal-XErBXwLt334kDk7sbfa43q.webp";
@@ -64,7 +65,6 @@ const sectors = [
 
 // Carrega posts reais para a Home
 const mdxFiles = import.meta.glob('/src/content/blog/**/*.mdx', { eager: true });
-const testimonialFiles = import.meta.glob('/src/content/testimonials/**/*.mdx', { eager: true });
 
 const allPosts = Object.entries(mdxFiles).map(([path, module]: [string, any]) => {
   const pathParts = path.split('/');
@@ -135,27 +135,11 @@ export default function Home() {
     },
   ], [t]);
 
-  const allTestimonials = useMemo(() => {
-    return Object.entries(testimonialFiles).map(([path, module]: [string, any]) => {
-      const parts = path.split('/');
-      const lang = parts[parts.length - 2];
-      const frontmatter = module.frontmatter || {};
-      return {
-        quote: frontmatter.quote,
-        author: frontmatter.author,
-        role: frontmatter.role,
-        order: frontmatter.order || 99,
-        lang
-      };
-    });
-  }, []);
-
   const currentTestimonials = useMemo(() => {
-    const currentLang = i18n.language || 'pt';
-    return allTestimonials
-      .filter(t => t.lang === currentLang)
-      .sort((a, b) => a.order - b.order);
-  }, [allTestimonials, i18n.language]);
+    const currentLang = (language as keyof typeof testimonialsData) || 'pt';
+    const data = testimonialsData[currentLang] || testimonialsData['pt'];
+    return [...data].sort((a, b) => (a.order || 0) - (b.order || 0));
+  }, [language]);
 
   const latestPosts = useMemo(() => {
     const currentLang = i18n.language || 'pt';
