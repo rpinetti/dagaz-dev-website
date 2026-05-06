@@ -61,6 +61,8 @@ const sectors = [
 
 // Carrega posts reais para a Home
 const mdxFiles = import.meta.glob('/src/content/blog/**/*.mdx', { eager: true });
+const testimonialFiles = import.meta.glob('/src/content/testimonials/**/*.mdx', { eager: true });
+
 const allPosts = Object.entries(mdxFiles).map(([path, module]: [string, any]) => {
   const pathParts = path.split('/');
   const fileName = pathParts.pop() || '';
@@ -130,23 +132,27 @@ export default function Home() {
     },
   ], [t]);
 
-  const testimonials = [
-    {
-      quote: "Dagaz transformou nossa jornada SAP com clareza estratégica e execução impecável.",
-      author: "CEO, Empresa de Varejo",
-      role: "Diretor de Transformação",
-    },
-    {
-      quote: "A equipe trouxe expertise técnica profunda e visão de negócio rara no mercado.",
-      author: "CTO, Indústria 4.0",
-      role: "VP de Arquitetura",
-    },
-    {
-      quote: "Mais que consultores, foram parceiros na construção de um SAP resiliente e moderno.",
-      author: "Gerente de Projetos, Energia",
-      role: "Líder de Implementação",
-    },
-  ];
+  const allTestimonials = useMemo(() => {
+    return Object.entries(testimonialFiles).map(([path, module]: [string, any]) => {
+      const parts = path.split('/');
+      const lang = parts[parts.length - 2];
+      const frontmatter = module.frontmatter || {};
+      return {
+        quote: frontmatter.quote,
+        author: frontmatter.author,
+        role: frontmatter.role,
+        order: frontmatter.order || 99,
+        lang
+      };
+    });
+  }, []);
+
+  const currentTestimonials = useMemo(() => {
+    const currentLang = i18n.language || 'pt';
+    return allTestimonials
+      .filter(t => t.lang === currentLang)
+      .sort((a, b) => a.order - b.order);
+  }, [allTestimonials, i18n.language]);
 
   const latestPosts = useMemo(() => {
     const currentLang = i18n.language || 'pt';
@@ -319,8 +325,8 @@ return (
         <SectionLabel>{t("testimonials.title")}</SectionLabel>
         <h2 className="mt-3 font-heading text-4xl font-extrabold text-white md:text-6xl">{t("testimonials.description")}</h2>
         <div className="mt-12 grid gap-6 md:grid-cols-3">
-          {testimonials.map((testimonial) => (
-            <article key={testimonial.author} className="runic-panel p-6">
+          {currentTestimonials.map((testimonial, idx) => (
+            <article key={testimonial.author + idx} className="runic-panel p-6">
               <div className="relative z-10">
                 <Quote className="h-6 w-6 text-[#D4AF37]" />
                 <p className="mt-5 leading-8 text-slate-200">"{testimonial.quote}"</p>
