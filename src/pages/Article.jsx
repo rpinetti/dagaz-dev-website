@@ -25,14 +25,23 @@ const Article = () => {
   useEffect(() => {
     if (postMetadata) {
       setLoading(true);
-      fetch(postMetadata.contentFile)
-        .then(res => res.text())
+      // Garante que o caminho não tenha duplicidade de barras e seja relativo à raiz
+      const fetchUrl = postMetadata.contentFile.startsWith('/') 
+        ? postMetadata.contentFile 
+        : `/${postMetadata.contentFile}`;
+        
+      fetch(fetchUrl)
+        .then(res => {
+          if (!res.ok) throw new Error(`Status: ${res.status}`);
+          return res.text();
+        })
         .then(text => {
           setPostContent(text);
           setLoading(false);
         })
         .catch(err => {
           console.error("Erro ao carregar o artigo:", err);
+          setPostContent("# Erro ao carregar o pergaminho\nO conteúdo não pôde ser recuperado do servidor.");
           setLoading(false);
         });
     }
@@ -95,7 +104,7 @@ const Article = () => {
         schema={articleSchema}
       />
       <Link to="/blog" className={styles.backLink}>
-        <ArrowLeft size={20} /> {t('nav.blog')}
+        <ArrowLeft size={20} /> {t('nav.insights')}
       </Link>
 
       <article className={styles.article}>

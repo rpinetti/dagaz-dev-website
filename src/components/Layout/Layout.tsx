@@ -6,18 +6,7 @@ import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { LanguageTransitionWrapper } from "@/components/LanguageTransitionWrapper";
 
-import blogData from "@/data/blog.json";
-
-// Processa posts para a busca global de forma leve
-const allPosts = Object.entries(blogData).flatMap(([lang, posts]: [string, any]) => {
-  return posts.map((post: any) => ({
-    id: post.id,
-    lang,
-    title: post.title,
-    category: post.category,
-    desc: post.desc || post.summary || ""
-  }));
-});
+// blogData agora é carregado dinamicamente no componente
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const { t, i18n } = useTranslation();
@@ -26,6 +15,25 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [scrolled, setScrolled] = useState(false);
+  const [allPosts, setAllPosts] = useState<any[]>([]);
+
+  useEffect(() => {
+    fetch('/content/blog.json')
+      .then(res => res.json())
+      .then(data => {
+        const postsArray = Object.entries(data).flatMap(([lang, posts]: [string, any]) => {
+          return posts.map((post: any) => ({
+            id: post.id,
+            lang,
+            title: post.title,
+            category: post.category,
+            desc: post.desc || post.summary || ""
+          }));
+        });
+        setAllPosts(postsArray);
+      })
+      .catch(err => console.error("Erro ao carregar blog.json no Layout:", err));
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {

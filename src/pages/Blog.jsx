@@ -6,21 +6,33 @@ import Card from '../components/Card/Card';
 import SEO from '../components/SEO';
 import styles from './Blog.module.css';
 
-import blogData from '../data/blog.json';
-
-// Processa o objeto retornado pelo JSON em um array de posts para todas as línguas
-const allPosts = Object.entries(blogData).flatMap(([lang, posts]) => {
-  return posts.map(post => ({
-    ...post,
-    lang
-  }));
-});
-
 const Blog = () => {
   const { t, i18n } = useTranslation();
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchTerm, setSearchTerm] = useState(searchParams.get('search') || '');
   const [activeCategory, setActiveCategory] = useState('all');
+  const [allPosts, setAllPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  // Carrega os dados do blog dinamicamente
+  useEffect(() => {
+    fetch('/content/blog.json')
+      .then(res => res.json())
+      .then(data => {
+        const postsArray = Object.entries(data).flatMap(([lang, posts]) => {
+          return posts.map(post => ({
+            ...post,
+            lang
+          }));
+        });
+        setAllPosts(postsArray);
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error("Erro ao carregar blog.json:", err);
+        setLoading(false);
+      });
+  }, []);
 
   // Sincroniza o termo de busca quando o parâmetro da URL muda
   useEffect(() => {
@@ -69,11 +81,11 @@ const Blog = () => {
   return (
     <div className="container" style={{ padding: '4rem 0' }}>
       <SEO 
-        title={t('nav.blog')} 
-        description="Artigos, tutoriais e reflexões sobre SAP, desenvolvimento e carreira." 
+        title={t('nav.insights')} 
+        description={t('blog.description')} 
         url="/blog"
       />
-      <h1 style={{ marginBottom: '0.5rem' }}>{t('nav.blog')}</h1>
+      <h1 style={{ marginBottom: '0.5rem' }}>{t('nav.insights')}</h1>
       <p style={{ color: 'var(--text-secondary)', marginBottom: '3rem' }}>
         Artigos, tutoriais e reflexões sobre SAP, desenvolvimento e carreira.
       </p>
@@ -83,10 +95,10 @@ const Blog = () => {
         <Search className={styles.searchIcon} size={20} />
         <input 
           type="text" 
-          placeholder={t('blog.search_placeholder')}
+          placeholder={t('blog.search_placeholder')} 
           className={styles.searchInput}
           value={searchTerm}
-          onChange={handleSearchChange}
+          onChange={(e) => setSearchTerm(e.target.value)}
         />
       </div>
 
@@ -103,8 +115,12 @@ const Blog = () => {
         ))}
       </div>
 
-      {/* Lista de Posts */}
-      {filteredPosts.length > 0 ? (
+      {loading ? (
+        <div style={{ textAlign: 'center', padding: '4rem 0' }}>
+          <div className="animate-spin inline-block w-8 h-8 border-4 border-primary border-t-transparent rounded-full mb-4"></div>
+          <p className="text-muted-foreground uppercase tracking-widest text-xs font-code">Lendo as Runas...</p>
+        </div>
+      ) : filteredPosts.length > 0 ? (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: '2rem' }}>
           {filteredPosts.map(post => (
             <Card 

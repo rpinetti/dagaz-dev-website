@@ -46,7 +46,8 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { motion } from "framer-motion";
 import { OptimizedImage } from "@/components/OptimizedImage";
 import testimonialsData from "@/data/testimonials.json";
-import blogData from "@/data/blog.json";
+import testimonialsData from "@/data/testimonials.json";
+// blogData agora é carregado dinamicamente no componente
 
 const heroImage = "https://d2xsxph8kpxj0f.cloudfront.net/310519663628243590/XyUenGTrKRhDXVbbUSRY3m/dagaz-hero-cyber-forge-8PDWLYRFL4xH3A669uxTVa.webp";
 const runeSeal = "https://d2xsxph8kpxj0f.cloudfront.net/310519663628243590/XyUenGTrKRhDXVbbUSRY3m/dagaz-rune-seal-XErBXwLt334kDk7sbfa43q.webp";
@@ -64,21 +65,17 @@ const sectors = [
   "Tecnologia B2B",
 ];
 
-// Processa todos os posts do blog
-const allPosts = Object.entries(blogData).flatMap(([lang, posts]) => {
-  return posts.map(post => ({
-    ...post,
-    lang
-  }));
-}).sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+// allPosts agora é calculado dentro do componente após o fetch
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return <p className="font-code text-[11px] uppercase tracking-[0.28em] text-[#D4AF37]">{children}</p>;
 }
 
 export default function Home() {
-  const { t, i18n } = useTranslation(); // i18n necessário para filtragem de posts
+  const { t, i18n } = useTranslation();
   const { language } = useLanguage();
+  const [allPosts, setAllPosts] = useState([]);
+  const [loadingPosts, setLoadingPosts] = useState(true);
 
   const philosophyCards = useMemo(() => [
     {
@@ -131,12 +128,32 @@ export default function Home() {
     return [...data].sort((a, b) => (a.order || 0) - (b.order || 0));
   }, [language]);
 
+  // Carrega posts do blog dinamicamente
+  useEffect(() => {
+    fetch('/content/blog.json')
+      .then(res => res.json())
+      .then(data => {
+        const postsArray = Object.entries(data).flatMap(([lang, posts]: [string, any]) => {
+          return posts.map((post: any) => ({
+            ...post,
+            lang
+          }));
+        }).sort((a: any, b: any) => new Date(b.date).getTime() - new Date(a.date).getTime());
+        setAllPosts(postsArray as any);
+        setLoadingPosts(false);
+      })
+      .catch(err => {
+        console.error("Erro ao carregar blog.json na Home:", err);
+        setLoadingPosts(false);
+      });
+  }, []);
+
   const latestPosts = useMemo(() => {
     const currentLang = i18n.language || 'pt';
     return allPosts
-      .filter(post => post.lang === currentLang)
+      .filter((post: any) => post.lang === currentLang)
       .slice(0, 2);
-  }, [i18n.language]);
+  }, [i18n.language, allPosts]);
 
 return (
   <>
@@ -391,37 +408,43 @@ return (
           </div>
           <p className="max-w-md text-muted-foreground">{t("blog.description")}</p>
         </motion.div>
-        <div className="grid gap-5 md:grid-cols-2">
-          {latestPosts.map((post, i) => (
-            <motion.article 
-              key={post.id} 
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
-              className="group runic-panel p-6 transition hover:-translate-y-1 hover:border-cyan-300/40"
-            >
-              <div className="relative z-10">
-                <div className="flex flex-wrap items-center justify-between gap-3 font-code text-[10px] uppercase tracking-[0.2em]">
-                  <div className="flex flex-wrap items-center gap-3">
-                    <span className="text-[#00D9FF]">{post.category}</span>
-                    <span className="text-slate-500">•</span>
-                    <span className="text-[#D4AF37]">{post.author}</span>
+        {loadingPosts ? (
+          <div className="flex justify-center py-12">
+            <div className="animate-spin h-8 w-8 border-4 border-primary border-t-transparent rounded-full"></div>
+          </div>
+        ) : (
+          <div className="grid gap-5 md:grid-cols-2">
+            {latestPosts.map((post: any, i) => (
+              <motion.article 
+                key={post.id} 
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+                className="group runic-panel p-6 transition hover:-translate-y-1 hover:border-cyan-300/40"
+              >
+                <div className="relative z-10">
+                  <div className="flex flex-wrap items-center justify-between gap-3 font-code text-[10px] uppercase tracking-[0.2em]">
+                    <div className="flex flex-wrap items-center gap-3">
+                      <span className="text-[#00D9FF]">{post.category}</span>
+                      <span className="text-slate-500">•</span>
+                      <span className="text-[#D4AF37]">{post.author}</span>
+                    </div>
+                    <ReadingTime minutes={post.readingTime} showIcon={true} />
                   </div>
-                  <ReadingTime minutes={post.readingTime} showIcon={true} />
+                  <h3 className="mt-4 font-heading text-2xl font-bold text-foreground transition group-hover:text-cyan-100">{post.title}</h3>
+                  <p className="mt-3 leading-7 text-muted-foreground">{post.summary}</p>
+                  <div className="mt-6 flex flex-col gap-4">
+                    <Link to={`/artigo/${post.id}`} className="inline-flex items-center gap-2 font-heading text-sm font-bold uppercase tracking-[0.16em] text-[#00D9FF]">
+                      {t("blog.readMore")} <ChevronRight className="h-4 w-4" />
+                    </Link>
+                    <ShareButtons title={post.title} url={`https://dagaz.dev/artigo/${post.id}`} text={post.summary} showLabels={false} className="border-t border-slate-700 pt-4" />
+                  </div>
                 </div>
-                <h3 className="mt-4 font-heading text-2xl font-bold text-foreground transition group-hover:text-cyan-100">{post.title}</h3>
-                <p className="mt-3 leading-7 text-muted-foreground">{post.summary}</p>
-                <div className="mt-6 flex flex-col gap-4">
-                  <Link to={`/artigo/${post.id}`} className="inline-flex items-center gap-2 font-heading text-sm font-bold uppercase tracking-[0.16em] text-[#00D9FF]">
-                    {t("blog.readMore")} <ChevronRight className="h-4 w-4" />
-                  </Link>
-                  <ShareButtons title={post.title} url={`https://dagaz.dev/artigo/${post.id}`} text={post.summary} showLabels={false} className="border-t border-slate-700 pt-4" />
-                </div>
-              </div>
-            </motion.article>
-          ))}
-        </div>
+              </motion.article>
+            ))}
+          </div>
+        )}
       </div>
     </section>
 
