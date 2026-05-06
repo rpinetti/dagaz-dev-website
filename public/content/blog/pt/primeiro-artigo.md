@@ -1,11 +1,3 @@
----
-title: "A Jornada da Forja: Codando como Vikings"
-date: "2026-08-20"
-author: "Sigurd"
-category: "Desenvolvimento"
-readingTime: "3 min"
----
-
 # Bem-vindo à Forja
 
 Guerreiro, seja muito bem-vindo ao primeiro artigo oficial do **Projeto DAGAZ**. 
@@ -18,14 +10,16 @@ A runa *Dagaz* significa o amanhecer. Quando você refatora aquele código legad
 
 > "O verdadeiro desenvolvedor sênior não é aquele que sabe todas as respostas, mas aquele que tem a coragem de explorar o desconhecido." — *Sigurd*
 
-### Dica da Forja
-Sempre teste suas queries antes de mandar para a produção!
+### Comparativo de Performance
 
-```abap
-SELECT * FROM makt
-  INTO TABLE @DATA(lt_makt)
-  UP TO 100 ROWS
-  WHERE spras = @sy-langu.
-```
+Abaixo, um exemplo de como estruturamos nossos dados na forja:
+
+| Componente | Objetivo | Status |
+| :--- | :--- | :--- |
+| **S/4HANA** | Core Business | Operacional |
+| **BTP** | Inovação | Escalando |
+| **Clean ABAP** | Qualidade | Mandatório |
+
+![Visão da Forja](https://d2xsxph8kpxj0f.cloudfront.net/310519663628243590/XyUenGTrKRhDXVbbUSRY3m/dagaz-services-forge-panels-DzReZnaaEjcPVgNkoqTJkA.webp)
 
 **#CodandoComoVikings**

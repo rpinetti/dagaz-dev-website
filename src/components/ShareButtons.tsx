@@ -89,27 +89,29 @@ export function ShareButtons({
   ];
 
   return (
-    <div className={`flex items-center gap-3 ${className}`}>
-      <span className="font-code text-xs uppercase tracking-[0.18em] text-slate-400">
+    <div className={`flex flex-wrap items-center gap-3 ${className}`}>
+      <span className="font-code text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
         {t('blog.share') || 'Compartilhar'}
       </span>
-      <div className="flex items-center gap-2">
+      <div className="flex flex-wrap items-center gap-2">
         {shareButtons.map((button) => {
           const Icon = button.icon;
           return (
             <button
               key={button.id}
               onClick={button.onClick}
-              className={`p-2 rounded-lg border border-slate-200 transition ${button.bgColor} ${button.color}`}
+              className={`p-2 rounded-lg border border-border bg-card/50 transition hover:bg-primary/10 hover:border-primary/50 text-foreground ${button.color === 'text-green-600' ? 'text-green-500 border-green-500/50' : ''}`}
               title={button.label}
               aria-label={button.label}
             >
-              <Icon className="h-4 w-4" />
-              {showLabels && (
-                <span className="ml-2 text-xs font-code uppercase tracking-[0.1em]">
-                  {button.label}
-                </span>
-              )}
+              <div className="flex items-center">
+                <Icon className="h-4 w-4" />
+                {showLabels && (
+                  <span className="ml-2 text-[10px] font-code uppercase tracking-[0.1em]">
+                    {button.label}
+                  </span>
+                )}
+              </div>
             </button>
           );
         })}

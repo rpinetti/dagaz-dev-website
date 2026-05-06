@@ -46,6 +46,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { motion } from "framer-motion";
 import { OptimizedImage } from "@/components/OptimizedImage";
 import testimonialsData from "@/data/testimonials.json";
+import blogData from "@/data/blog.json";
 
 const heroImage = "https://d2xsxph8kpxj0f.cloudfront.net/310519663628243590/XyUenGTrKRhDXVbbUSRY3m/dagaz-hero-cyber-forge-8PDWLYRFL4xH3A669uxTVa.webp";
 const runeSeal = "https://d2xsxph8kpxj0f.cloudfront.net/310519663628243590/XyUenGTrKRhDXVbbUSRY3m/dagaz-rune-seal-XErBXwLt334kDk7sbfa43q.webp";
@@ -63,23 +64,12 @@ const sectors = [
   "Tecnologia B2B",
 ];
 
-// Carrega posts reais para a Home
-const mdxFiles = import.meta.glob('/src/content/blog/**/*.mdx', { eager: true });
-
-const allPosts = Object.entries(mdxFiles).map(([path, module]: [string, any]) => {
-  const pathParts = path.split('/');
-  const fileName = pathParts.pop() || '';
-  const lang = pathParts.pop() || '';
-  return {
-    id: fileName.replace('.mdx', ''),
-    lang,
-    title: module.frontmatter?.title || 'Título Indefinido',
-    date: module.frontmatter?.date || '2026-04-28',
-    author: module.frontmatter?.author || 'Caio Dagaz',
-    category: module.frontmatter?.category || 'SAP',
-    summary: module.frontmatter?.desc || module.frontmatter?.description || '',
-    content: module.default?.toString() || "" // Para cálculo de tempo de leitura
-  };
+// Processa todos os posts do blog
+const allPosts = Object.entries(blogData).flatMap(([lang, posts]) => {
+  return posts.map(post => ({
+    ...post,
+    lang
+  }));
 }).sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
 function SectionLabel({ children }: { children: React.ReactNode }) {

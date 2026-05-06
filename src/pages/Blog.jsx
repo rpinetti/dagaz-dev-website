@@ -6,27 +6,14 @@ import Card from '../components/Card/Card';
 import SEO from '../components/SEO';
 import styles from './Blog.module.css';
 
-// Carrega todos os MDX eagerly para termos acesso imediato ao frontmatter
-const mdxFiles = import.meta.glob('/src/content/blog/**/*.mdx', { eager: true });
+import blogData from '../data/blog.json';
 
-// Processa o objeto retornado pelo import.meta.glob em um array de posts
-const allPosts = Object.entries(mdxFiles).map(([path, module]) => {
-  // O path é algo como: /src/content/blog/pt/primeiro-artigo.mdx
-  const pathParts = path.split('/');
-  const fileName = pathParts.pop(); // primeiro-artigo.mdx
-  const lang = pathParts.pop(); // pt ou en
-  const id = fileName.replace('.mdx', '');
-  
-  return {
-    id,
-    lang,
-    // Garante que não quebre caso o MDX ainda não tenha o frontmatter configurado corretamente
-    title: module.frontmatter?.title || 'Título Indefinido',
-    date: module.frontmatter?.date || 'Data Desconhecida',
-    readingTime: module.frontmatter?.readingTime || 0,
-    categoryKey: module.frontmatter?.category || 'all',
-    desc: module.frontmatter?.desc || module.frontmatter?.description || 'Nenhuma descrição fornecida.'
-  };
+// Processa o objeto retornado pelo JSON em um array de posts para todas as línguas
+const allPosts = Object.entries(blogData).flatMap(([lang, posts]) => {
+  return posts.map(post => ({
+    ...post,
+    lang
+  }));
 });
 
 const Blog = () => {
