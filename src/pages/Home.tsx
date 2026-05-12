@@ -44,6 +44,7 @@ import { ShareButtons } from "@/components/ShareButtons";
 import { Newsletter } from "@/components/Newsletter";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { motion } from "framer-motion";
+import { wpService } from "@/services/wpService";
 import { OptimizedImage } from "@/components/OptimizedImage";
 import testimonialsData from "@/data/testimonials.json";
 
@@ -61,7 +62,7 @@ export default function Home() {
   const { language } = useLanguage();
 
   // Estados para dados dinâmicos
-  const [allPosts, setAllPosts] = useState<any[]>([]);
+  const [latestPosts, setLatestPosts] = useState<any[]>([]);
   const [loadingPosts, setLoadingPosts] = useState(true);
   const [currentTestimonials, setCurrentTestimonials] = useState<any[]>([]);
 
@@ -82,41 +83,26 @@ export default function Home() {
     }
   }, [language]);
 
-  // Carrega Posts do Blog de forma segura
+  // Carrega Posts do WordPress de forma segura
   useEffect(() => {
     const loadPosts = async () => {
+      setLoadingPosts(true);
       try {
-        const res = await fetch('/content/blog.json');
-        if (!res.ok) throw new Error("Falha no fetch");
-        const data = await res.json();
-
-        if (data && typeof data === 'object') {
-          const postsArray: any[] = [];
-          Object.entries(data).forEach(([lang, posts]) => {
-            if (Array.isArray(posts)) {
-              posts.forEach((post: any) => {
-                if (post) postsArray.push({ ...post, lang });
-              });
-            }
-          });
-
-          postsArray.sort((a, b) => {
-            const dateA = a.date ? new Date(a.date).getTime() : 0;
-            const dateB = b.date ? new Date(b.date).getTime() : 0;
-            return dateB - dateA;
-          });
-
-          setAllPosts(postsArray);
-        }
+        const currentLang = i18n?.language || 'pt';
+        const data = await wpService.getPosts({
+          lang: currentLang,
+          per_page: 2
+        });
+        setLatestPosts(data);
       } catch (err) {
-        console.error("Erro ao carregar posts:", err);
+        console.error("Erro ao carregar posts do WordPress:", err);
       } finally {
         setLoadingPosts(false);
       }
     };
 
     loadPosts();
-  }, []);
+  }, [i18n?.language]);
 
   const philosophyCards = useMemo(() => [
     {
@@ -163,12 +149,6 @@ export default function Home() {
     },
   ], [t]);
 
-  const latestPosts = useMemo(() => {
-    const currentLang = i18n?.language || 'pt';
-    return allPosts
-      .filter((post: any) => post && post.lang === currentLang)
-      .slice(0, 2);
-  }, [i18n?.language, allPosts]);
 
   return (
     <>
@@ -379,12 +359,12 @@ export default function Home() {
                       <ReadingTime minutes={post?.readingTime || '0'} showIcon={true} />
                     </div>
                     <h3 className="mt-4 font-heading text-2xl font-bold text-foreground transition group-hover:text-cyan-100">{post?.title || ''}</h3>
-                    <p className="mt-3 leading-7 text-muted-foreground">{post?.summary || ''}</p>
+                    <p className="mt-3 leading-7 text-muted-foreground">{post?.desc || ''}</p>
                     <div className="mt-6 flex flex-col gap-4">
                       <Link to={`/artigo/${post?.id || ''}`} className="inline-flex items-center gap-2 font-heading text-sm font-bold uppercase tracking-[0.16em] text-[#00D9FF]">
                         {t("blog.readMore")} <ChevronRight className="h-4 w-4" />
                       </Link>
-                      <ShareButtons title={post?.title || ''} url={`https://dagaz.dev/artigo/${post?.id || ''}`} text={post?.summary || ''} showLabels={false} className="border-t border-slate-700 pt-4" />
+                      <ShareButtons title={post?.title || ''} url={`https://dagaz.dev/artigo/${post?.id || ''}`} text={post?.desc || ''} showLabels={false} className="border-t border-slate-700 pt-4" />
                     </div>
                   </div>
                 </motion.article>

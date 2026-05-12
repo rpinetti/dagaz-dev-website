@@ -5,11 +5,9 @@
   "type": "module",
   "scripts": {
     "start": "node server.js",
-    "bundle-blog": "node scripts/bundle-blog.js",
-    "predev": "node scripts/bundle-blog.js",
     "dev": "vite",
     "sitemap": "node scripts/generate-sitemap.cjs",
-    "build": "node scripts/bundle-blog.js && npm run sitemap && vite build",
+    "build": "npm run sitemap && vite build",
     "lint": "eslint .",
     "preview": "vite preview"
   },
