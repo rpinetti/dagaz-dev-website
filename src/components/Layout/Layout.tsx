@@ -15,6 +15,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [scrolled, setScrolled] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const [headerVisible, setHeaderVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
   const [allPosts, setAllPosts] = useState<any[]>([]);
 
   useEffect(() => {
@@ -49,11 +52,27 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
+      const currentScrollY = window.scrollY;
+      setScrolled(currentScrollY > 20);
+      
+      // Smart header visibility
+      if (currentScrollY > lastScrollY && currentScrollY > 100) {
+        setHeaderVisible(false);
+      } else {
+        setHeaderVisible(true);
+      }
+      setLastScrollY(currentScrollY);
+
+      // Scroll progress
+      const totalScroll = document.documentElement.scrollTop;
+      const windowHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      if (windowHeight > 0) {
+        setScrollProgress(totalScroll / windowHeight);
+      }
     };
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [lastScrollY]);
 
   const filteredResults = searchQuery.trim().length > 1 
     ? allPosts.filter(post => 
@@ -77,8 +96,15 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     <LanguageTransitionWrapper animationType="fade-slide">
       <div className="min-h-screen bg-background text-foreground">
         <header className={`sticky top-0 z-50 border-b border-white/10 transition-all duration-300 ${
+          headerVisible ? "translate-y-0" : "-translate-y-full"
+        } ${
           scrolled ? "h-16 bg-background/95 backdrop-blur-3xl" : "h-20 bg-background/80 backdrop-blur-2xl"
         }`}>
+          {/* Scroll Progress Bar */}
+          <div 
+            className="absolute bottom-0 left-0 h-[2px] bg-gradient-to-r from-[#00D9FF] to-[#D4AF37] transition-all duration-150" 
+            style={{ width: `${scrollProgress * 100}%` }} 
+          />
           <div className="container flex h-full items-center justify-between">
             <Link to="/" className="inline-flex items-center gap-2 transition hover:opacity-80">
               <div className="flex h-8 w-8 items-center justify-center rounded border border-cyan-300/40 bg-cyan-300/10">

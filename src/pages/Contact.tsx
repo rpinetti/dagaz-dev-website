@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import SEO from "@/components/SEO";
 import { ContactForm } from "@/components/ContactForm";
 import { Mail, Phone, MapPin, Globe } from "lucide-react";
+import { MapView } from "@/components/Map";
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return <p className="font-code text-[11px] uppercase tracking-[0.28em] text-[#D4AF37]">{children}</p>;
@@ -73,6 +74,20 @@ export default function Contact() {
               <ContactForm />
             </div>
           </div>
+        </div>
+        
+        <div className="mt-20 border border-white/10 p-1 runic-panel bg-slate-900/50">
+           <div className="relative z-10">
+             <div className="flex items-center justify-between p-4 bg-black/40 border-b border-white/5">
+                <p className="font-heading font-bold text-white flex items-center gap-2"><Globe className="h-5 w-5 text-[#00D9FF]"/> Presença Global</p>
+                <p className="font-code text-[10px] uppercase tracking-widest text-slate-400">HQ: São Paulo, Brasil</p>
+             </div>
+             <MapView 
+                className="w-full h-[400px] grayscale contrast-125 hover:grayscale-0 transition-all duration-700" 
+                initialCenter={{ lat: -23.5505, lng: -46.6333 }} 
+                initialZoom={10} 
+             />
+           </div>
         </div>
       </div>
     </div>

@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Mail, Send, CheckCircle2 } from 'lucide-react';
+import { BookOpen, Send, Download } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 /**
- * Componente de captura de Newsletter.
+ * Componente de captura de Leads (E-book).
  * Inclui animações e suporte a internacionalização.
  */
 export function Newsletter() {
@@ -15,8 +15,8 @@ export function Newsletter() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (email) {
-      // Aqui você integraria com Mailchimp, SendGrid, etc.
-      console.log('Subscribing:', email);
+      // Integração futura (Mailchimp, CRM, etc.) para envio do PDF
+      console.log('Lead Capturado:', email);
       setSubscribed(true);
       setEmail('');
     }
@@ -24,22 +24,22 @@ export function Newsletter() {
 
   return (
     <section className="relative overflow-hidden border-y border-border bg-background py-16">
-      <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/5 to-transparent opacity-50" />
+      <div className="absolute inset-0 bg-gradient-to-r from-[#D4AF37]/5 to-transparent opacity-50" />
       
       <div className="container relative z-10">
-        <div className="mx-auto max-w-4xl rounded-2xl border border-cyan-300/10 bg-white/[0.02] p-8 md:p-12">
+        <div className="mx-auto max-w-4xl rounded-2xl border border-[#D4AF37]/20 bg-white/[0.02] p-8 md:p-12 shadow-[0_0_40px_rgba(212,175,55,0.05)]">
           <div className="grid gap-8 md:grid-cols-[1fr_1.2fr] md:items-center">
             <div>
-              <div className="flex h-12 w-12 items-center justify-center rounded-lg border border-cyan-300/20 bg-cyan-300/10">
-                <Mail className="h-6 w-6 text-cyan-400" />
+              <div className="flex h-12 w-12 items-center justify-center rounded-lg border border-[#D4AF37]/30 bg-[#D4AF37]/10">
+                <BookOpen className="h-6 w-6 text-[#D4AF37]" />
               </div>
               <h2 className="mt-6 font-heading text-3xl font-bold text-foreground md:text-4xl">
-                {subscribed ? (t('newsletter.welcome') || "Bem-vindo à Alcateia!") : (t('newsletter.title') || "Assine o Insight Dagaz")}
+                {subscribed ? "Guia Desbloqueado!" : "Baixe o Guia Definitivo S/4HANA"}
               </h2>
               <p className="mt-4 text-muted-foreground">
                 {subscribed 
-                  ? (t('newsletter.success') || "Sua jornada rumo à clareza SAP começou. Você receberá nossos pergaminhos em breve.") 
-                  : (t('newsletter.description') || "Receba estratégias SAP, novidades sobre BTP e Clean Code diretamente no seu e-mail.")
+                  ? "Sua jornada rumo à clareza SAP começou. Enviamos o link de download para o seu e-mail." 
+                  : "Descubra as 5 estratégias essenciais para uma migração S/4HANA sem riscos e com foco em performance."
                 }
               </p>
             </div>
@@ -49,34 +49,34 @@ export function Newsletter() {
                 <motion.div 
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  className="flex flex-col items-center justify-center rounded-xl bg-cyan-400/5 p-8 text-center border border-cyan-400/20"
+                  className="flex flex-col items-center justify-center rounded-xl bg-[#D4AF37]/10 p-8 text-center border border-[#D4AF37]/30"
                 >
-                  <CheckCircle2 className="h-12 w-12 text-cyan-400" />
-                  <p className="mt-4 font-heading font-bold text-foreground uppercase tracking-wider">Inscrição Confirmada!</p>
+                  <Download className="h-12 w-12 text-[#D4AF37] animate-bounce" />
+                  <p className="mt-4 font-heading font-bold text-foreground uppercase tracking-wider">Verifique sua caixa de entrada</p>
                 </motion.div>
               ) : (
                 <form onSubmit={handleSubmit} className="flex flex-col gap-3 sm:flex-row sm:items-center">
                   <div className="relative flex-1">
-                    <Mail className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-500" />
+                    <BookOpen className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-500" />
                     <input 
                       type="email" 
                       required
-                      placeholder="seu@email.com"
-                      className="w-full rounded-lg border border-border bg-card/50 py-4 pl-12 pr-4 text-foreground placeholder-slate-500 outline-none transition focus:border-primary/50 focus:bg-card"
+                      placeholder="seu@email.com corporativo"
+                      className="w-full rounded-lg border border-border bg-card/50 py-4 pl-12 pr-4 text-foreground placeholder-slate-500 outline-none transition focus:border-[#D4AF37]/50 focus:bg-card"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                     />
                   </div>
                   <button 
                     type="submit"
-                    className="flex items-center justify-center gap-2 rounded-lg bg-cyan-400 px-8 py-4 font-heading text-sm font-bold uppercase tracking-widest text-[#071423] transition hover:bg-cyan-300"
+                    className="flex items-center justify-center gap-2 rounded-lg bg-[#D4AF37] px-8 py-4 font-heading text-sm font-bold uppercase tracking-widest text-[#071423] transition hover:bg-[#f0ce61]"
                   >
-                    {t('newsletter.button') || "Assinar"} <Send className="h-4 w-4" />
+                    Baixar <Download className="h-4 w-4" />
                   </button>
                 </form>
               )}
-              <p className="mt-4 text-center text-[10px] uppercase tracking-widest text-slate-600 md:text-left">
-                {t('newsletter.privacy') || "Prometemos: zero spam, apenas expertise técnica."}
+              <p className="mt-4 text-center text-[10px] uppercase tracking-widest text-slate-500 md:text-left">
+                Prometemos: zero spam, apenas expertise técnica de alto nível.
               </p>
             </div>
           </div>

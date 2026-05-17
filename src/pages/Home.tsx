@@ -10,6 +10,14 @@ import { LanguageTransitionWrapper } from "@/components/LanguageTransitionWrappe
 import { Link } from "react-router-dom";
 import SEO from "@/components/SEO";
 import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import {
   ArrowDownToLine,
   ArrowRight,
   ArrowUpRight,
@@ -167,6 +175,34 @@ export default function Home() {
             fetchPriority="high"
           />
         </div>
+        
+        {/* Partículas Dinâmicas (Fagulhas da Forja) */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+          {[...Array(15)].map((_, i) => (
+            <motion.div
+              key={`particle-${i}`}
+              className="absolute rounded-full blur-[1px] bg-[#00D9FF]"
+              style={{
+                width: Math.random() * 3 + 1 + "px",
+                height: Math.random() * 3 + 1 + "px",
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+              }}
+              animate={{
+                y: [0, -Math.random() * 200 - 100],
+                x: [0, Math.random() * 40 - 20],
+                opacity: [0, 0.8, 0],
+              }}
+              transition={{
+                duration: Math.random() * 5 + 4,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: Math.random() * 3,
+              }}
+            />
+          ))}
+        </div>
+
         <div className="absolute inset-0 bg-gradient-to-r from-background via-background/90 to-background/60" />
         <div className="container relative z-10 grid gap-12 lg:grid-cols-[1fr_0.95fr] lg:items-center">
           <motion.div
@@ -177,7 +213,11 @@ export default function Home() {
             <div className="mb-5 inline-flex items-center gap-2 border border-[#D4AF37]/35 bg-[#D4AF37]/10 px-3 py-1.5 font-code text-[11px] uppercase tracking-[0.28em] text-[#f3d76b]">
               <Flame className="h-4 w-4" /> {t("hero.badge")}
             </div>
-            <h1 className="font-heading text-5xl font-extrabold leading-tight text-foreground md:text-7xl">{t("hero.title")}</h1>
+            <h1 className="font-heading text-5xl font-extrabold leading-tight text-foreground md:text-7xl">
+              <span className="bg-gradient-to-r from-white via-cyan-100 to-[#00D9FF] bg-clip-text text-transparent drop-shadow-sm">
+                {t("hero.title")}
+              </span>
+            </h1>
             <p className="mt-6 max-w-2xl text-lg leading-8 text-muted-foreground">{t("hero.description")}</p>
             <Link to="/contato" className="mt-8 inline-block bg-[#D4AF37] px-8 py-4 font-heading text-sm font-bold uppercase tracking-[0.16em] text-[#071423] transition hover:bg-[#f0ce61]">
               {t("hero.cta")}
@@ -219,7 +259,8 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                className="runic-panel group p-8 transition hover:-translate-y-2 hover:border-cyan-300/40"
+                whileHover={{ y: -8, scale: 1.02 }}
+                className="runic-panel group p-8 transition hover:border-cyan-300/40 hover:shadow-[0_0_30px_rgba(0,217,255,0.15)]"
               >
                 <div className="relative z-10">
                   <div className="mb-6 flex h-12 w-12 items-center justify-center rounded border border-[#D4AF37]/30 bg-[#D4AF37]/10 text-[#D4AF37] transition group-hover:bg-[#D4AF37] group-hover:text-[#071423]">
@@ -254,27 +295,59 @@ export default function Home() {
 
             <div className="grid gap-6 sm:grid-cols-2">
               {services.map((service, i) => (
-                <motion.div
-                  key={service.title}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.1 }}
-                  className="runic-panel p-6"
-                >
-                  <div className="relative z-10">
-                    <service.icon className="mb-4 h-8 w-8 text-[#00D9FF]" />
-                    <h3 className="mb-2 font-heading text-lg font-bold text-foreground">{service.title}</h3>
-                    <p className="text-sm leading-6 text-muted-foreground">{service.text}</p>
-                    <div className="mt-4 flex flex-wrap gap-2">
-                      {service.tags.map(tag => (
-                        <span key={tag} className="border border-white/10 bg-white/5 px-2 py-0.5 font-code text-[9px] uppercase tracking-wider text-[#00D9FF]">
-                          {tag}
-                        </span>
-                      ))}
+                <Dialog key={service.title}>
+                  <DialogTrigger asChild>
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: i * 0.1 }}
+                      whileHover={{ y: -5, scale: 1.02 }}
+                      className="runic-panel p-6 hover:shadow-[0_0_20px_rgba(0,217,255,0.1)] transition-all cursor-pointer"
+                    >
+                      <div className="relative z-10">
+                        <service.icon className="mb-4 h-8 w-8 text-[#00D9FF]" />
+                        <h3 className="mb-2 font-heading text-lg font-bold text-foreground">{service.title}</h3>
+                        <p className="text-sm leading-6 text-muted-foreground">{service.text}</p>
+                        <div className="mt-4 flex flex-wrap gap-2">
+                          {service.tags.map(tag => (
+                            <span key={tag} className="border border-white/10 bg-white/5 px-2 py-0.5 font-code text-[9px] uppercase tracking-wider text-[#00D9FF]">
+                              {tag}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    </motion.div>
+                  </DialogTrigger>
+                  <DialogContent className="sm:max-w-[600px] runic-panel border-cyan-300/30 bg-background/95 backdrop-blur-xl">
+                    <DialogHeader>
+                      <DialogTitle className="flex items-center gap-3 text-2xl font-heading text-cyan-100">
+                        <service.icon className="h-6 w-6 text-[#00D9FF]" />
+                        {service.title}
+                      </DialogTitle>
+                      <DialogDescription className="text-muted-foreground mt-4 text-base leading-relaxed">
+                        {service.text}
+                        <br /><br />
+                        Nossos especialistas estão prontos para desenhar a arquitetura ideal e acelerar a jornada digital do seu negócio com as melhores práticas de mercado e foco absoluto em performance e segurança.
+                      </DialogDescription>
+                    </DialogHeader>
+                    <div className="mt-6 border-t border-white/10 pt-6">
+                      <h4 className="font-code text-xs uppercase tracking-widest text-[#D4AF37] mb-4">Tecnologias & Foco</h4>
+                      <div className="flex flex-wrap gap-2">
+                        {service.tags.map(tag => (
+                          <span key={tag} className="border border-cyan-500/30 bg-cyan-500/10 px-3 py-1 font-code text-xs uppercase tracking-wider text-[#00D9FF]">
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                      <div className="mt-8">
+                         <Link to="/contato" className="inline-flex w-full justify-center items-center gap-2 font-heading text-sm font-bold uppercase tracking-[0.16em] text-[#071423] bg-[#00D9FF] hover:bg-cyan-300 px-6 py-4 transition">
+                            Falar com um Especialista <ArrowRight className="h-4 w-4" />
+                         </Link>
+                      </div>
                     </div>
-                  </div>
-                </motion.div>
+                  </DialogContent>
+                </Dialog>
               ))}
             </div>
           </div>
