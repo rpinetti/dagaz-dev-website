@@ -61,6 +61,64 @@ export const wpService = {
   },
 
   /**
+   * Fetch comments for a specific post
+   */
+  async getComments(postId) {
+    const url = new URL(`${BASE_URL}/wp/v2/comments`);
+    url.searchParams.append('post', postId);
+    url.searchParams.append('per_page', 100);
+    url.searchParams.append('order', 'asc');
+
+    try {
+      const response = await fetch(url.toString());
+      if (!response.ok) throw new Error('Falha ao carregar comentários');
+      const comments = await response.json();
+      
+      return comments.map(comment => ({
+        id: comment.id,
+        author: comment.author_name,
+        date: new Date(comment.date).toLocaleDateString('pt-BR'),
+        content: comment.content.rendered,
+        avatar: comment.author_avatar_urls?.['96'] || null
+      }));
+    } catch (error) {
+      console.error('Erro no wpService.getComments:', error);
+      return [];
+    }
+  },
+
+  /**
+   * Submit a new comment
+   */
+  async submitComment({ postId, name, email, content }) {
+    try {
+      const response = await fetch(`${BASE_URL}/wp/v2/comments`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          post: postId,
+          author_name: name,
+          author_email: email,
+          content: content,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Erro ao enviar comentário');
+      }
+
+      return { success: true, data };
+    } catch (error) {
+      console.error('Erro no wpService.submitComment:', error);
+      return { success: false, error: error.message };
+    }
+  },
+
+  /**
    * Helper to format WP response to our frontend format
    */
   formatPost(wpPost) {

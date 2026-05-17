@@ -45,7 +45,7 @@ function App() {
                       <Route path="/blog" element={<Blog />} />
                       <Route path="/artigo/:id" element={<Article />} />
                       <Route path="/sobre" element={
-                        <div className="container" style={{marginTop: '2rem'}}>
+                        <div className="container" style={{ marginTop: '2rem' }}>
                           <SEO title="O Mentor" description="Conheça a jornada de Caio Dagaz, arquiteto SAP e mentor." url="/sobre" />
                           <h1>O Mentor</h1>
                           <p>Em construção...</p>
@@ -55,7 +55,7 @@ function App() {
                       <Route path="/privacidade" element={<PrivacyPolicy />} />
                       <Route path="/termos" element={<TermsOfService />} />
                       <Route path="*" element={
-                        <div className="container" style={{marginTop: '2rem'}}>
+                        <div className="container" style={{ marginTop: '2rem' }}>
                           <SEO title="404 - Não Encontrado" description="Página não encontrada no portal Dagaz.Dev." />
                           <h1>404 - Fora do mapa, guerreiro!</h1>
                         </div>
@@ -64,7 +64,7 @@ function App() {
                   </Suspense>
                 </Layout>
               </BrowserRouter>
-              <WhatsAppButton phoneNumber="5511999999999" />
+              <WhatsAppButton />
               <CookieConsentBanner />
               <Toaster />
             </TooltipProvider>

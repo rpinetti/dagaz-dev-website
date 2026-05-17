@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import Giscus from '@giscus/react';
 import { ArrowLeft } from 'lucide-react';
 import SEO from '../components/SEO';
 import styles from './Article.module.css';
 import { wpService } from '../services/wpService';
 import { OptimizedImage } from '@/components/OptimizedImage';
 import { ShareButtons } from '@/components/ShareButtons';
+import Comments from '../components/Comments/Comments';
 
 const Article = () => {
   const { id } = useParams(); // 'id' aqui é o slug do post
@@ -119,26 +119,7 @@ const Article = () => {
       </article>
 
       <div className={styles.commentsSection}>
-        <h3 className={styles.commentsTitle}>A Mesa Redonda</h3>
-        <p className={styles.commentsDesc}>Deixe seu comentário, dúvida ou adicione sua experiência sobre o tema abaixo.</p>
-        
-        <div className={styles.giscusWrapper}>
-          <Giscus
-            id="comments"
-            repo="rpinetti/dagaz-comments"
-            repoId="R_kgDOSWF7RQ"
-            category="Blog Comments"
-            categoryId="INSIRA_O_CATEGORY_ID_AQUI"
-            mapping="pathname"
-            strict="0"
-            reactionsEnabled="1"
-            emitMetadata="1"
-            inputPosition="top"
-            theme="preferred_color_scheme"
-            lang="pt"
-            loading="lazy"
-          />
-        </div>
+        <Comments postId={post.wp_id} />
       </div>
     </div>
   );
