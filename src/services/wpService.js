@@ -119,16 +119,16 @@ export const wpService = {
   },
 
   /**
-   * Captura lead de e-mail (Newsletter / E-book)
+   * Captura lead de e-mail (Newsletter / E-book / Comentários)
    */
-  async submitLead(email, source = 'home') {
+  async submitLead(email, source = 'home', name = '') {
     try {
       const response = await fetch(`${BASE_URL}/dagaz/v1/lead`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, source }),
+        body: JSON.stringify({ email, source, name }),
       });
 
       const data = await response.json();

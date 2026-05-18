@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Search, Menu, X, ArrowRight, FileText } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { LanguageTransitionWrapper } from "@/components/LanguageTransitionWrapper";
+import { wpService } from "@/services/wpService";
 
 // blogData agora é carregado dinamicamente no componente
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
+  const location = useLocation();
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -18,48 +20,91 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [headerVisible, setHeaderVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
-  const [allPosts, setAllPosts] = useState<any[]>([]);
+  const [searchResults, setSearchResults] = useState<any[]>([]);
+  const [searching, setSearching] = useState(false);
+  const [activeSection, setActiveSection] = useState("");
+
+  // Efeito de IntersectionObserver para destacar âncoras na Home
+  useEffect(() => {
+    if (location.pathname !== "/") {
+      setActiveSection("");
+      return;
+    }
+
+    const sections = ["sobre", "servicos"];
+    const observerOptions = {
+      root: null,
+      rootMargin: "-40% 0px -50% 0px", // ativa quando a seção ocupa a parte central da tela
+      threshold: 0
+    };
+
+    const observerCallback = (entries: IntersectionObserverEntry[]) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          setActiveSection(entry.target.id);
+        }
+      });
+    };
+
+    const observer = new IntersectionObserver(observerCallback, observerOptions);
+
+    // Pequeno delay para garantir que os elementos já foram renderizados
+    const timeoutId = setTimeout(() => {
+      sections.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+          observer.observe(el);
+        }
+      });
+    }, 200);
+
+    return () => {
+      clearTimeout(timeoutId);
+      observer.disconnect();
+    };
+  }, [location.pathname, children]);
 
   useEffect(() => {
-    fetch('/content/blog.json')
-      .then(res => {
-        if (!res.ok) throw new Error("Erro ao buscar JSON");
-        return res.json();
-      })
-      .then(data => {
-        if (!data || typeof data !== 'object') {
-          setAllPosts([]);
-          return;
-        }
+    if (searchQuery.trim().length < 2) {
+      setSearchResults([]);
+      return;
+    }
 
-        const postsArray = Object.entries(data).flatMap(([lang, posts]: [string, any]) => {
-          if (!Array.isArray(posts)) return [];
-          return posts.map((post: any) => ({
-            id: post.id,
-            lang,
-            title: post.title,
-            category: post.category,
-            desc: post.desc || post.summary || ""
-          }));
+    setSearching(true);
+    const delayDebounceFn = setTimeout(async () => {
+      try {
+        const currentLang = i18n.language || 'pt';
+        const posts = await wpService.getPosts({
+          lang: currentLang,
+          search: searchQuery.trim(),
+          per_page: 5
         });
-        setAllPosts(postsArray);
-      })
-      .catch(err => {
-        console.error("Erro ao carregar blog.json no Layout:", err);
-        setAllPosts([]);
-      });
-  }, []);
+        setSearchResults(posts || []);
+      } catch (err) {
+        console.error("Erro ao buscar posts dinamicamente no header:", err);
+        setSearchResults([]);
+      } finally {
+        setSearching(false);
+      }
+    }, 300);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [searchQuery, i18n.language]);
 
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
       setScrolled(currentScrollY > 20);
       
-      // Smart header visibility
-      if (currentScrollY > lastScrollY && currentScrollY > 100) {
-        setHeaderVisible(false);
-      } else {
+      // Menu fixo que acompanha o scroll na home ou quando o menu mobile está aberto, ocultação inteligente nas demais páginas
+      if (location.pathname === "/" || menuOpen) {
         setHeaderVisible(true);
+      } else {
+        if (currentScrollY > lastScrollY && currentScrollY > 100) {
+          setHeaderVisible(false);
+        } else {
+          setHeaderVisible(true);
+        }
       }
       setLastScrollY(currentScrollY);
 
@@ -72,15 +117,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [lastScrollY]);
+  }, [lastScrollY, menuOpen, location.pathname]);
 
-  const filteredResults = searchQuery.trim().length > 1 
-    ? allPosts.filter(post => 
-        post.lang === (i18n.language || 'pt') && 
-        (post.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
-         post.desc.toLowerCase().includes(searchQuery.toLowerCase()))
-      ).slice(0, 5)
-    : [];
+  const filteredResults = searchResults;
 
   const handleSearch = (e: React.FormEvent | React.KeyboardEvent) => {
     if (e.type === 'keydown' && (e as React.KeyboardEvent).key !== 'Enter') return;
@@ -115,18 +154,56 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </Link>
 
             <nav className="hidden items-center gap-7 font-code text-xs uppercase tracking-[0.18em] text-muted-foreground lg:flex">
-              <a className="transition hover:text-[#00D9FF]" href="/#sobre">{t("nav.sobre")}</a>
-              <a className="transition hover:text-[#00D9FF]" href="/#servicos">{t("nav.servicos")}</a>
-              <Link className="transition hover:text-[#00D9FF]" to="/blog">{t("nav.insights")}</Link>
-              <Link className="transition hover:text-[#00D9FF]" to="/contato">{t("nav.contato") || "Contato"}</Link>
+              <a 
+                className={`transition-all duration-300 border-b-2 pb-1 ${
+                  activeSection === "sobre" 
+                    ? "text-[#00D9FF] border-[#00D9FF] font-bold" 
+                    : "text-muted-foreground border-transparent hover:text-[#00D9FF]"
+                }`} 
+                href="/#sobre"
+              >
+                {t("nav.sobre")}
+              </a>
+              <a 
+                className={`transition-all duration-300 border-b-2 pb-1 ${
+                  activeSection === "servicos" 
+                    ? "text-[#00D9FF] border-[#00D9FF] font-bold" 
+                    : "text-muted-foreground border-transparent hover:text-[#00D9FF]"
+                }`} 
+                href="/#servicos"
+              >
+                {t("nav.servicos")}
+              </a>
+              <Link 
+                className={`transition-all duration-300 border-b-2 pb-1 ${
+                  location.pathname === "/blog" 
+                    ? "text-[#00D9FF] border-[#00D9FF] font-bold" 
+                    : "text-muted-foreground border-transparent hover:text-[#00D9FF]"
+                }`} 
+                to="/blog"
+              >
+                {t("nav.insights")}
+              </Link>
+              <Link 
+                className={`transition-all duration-300 border-b-2 pb-1 ${
+                  location.pathname === "/contato" 
+                    ? "text-[#00D9FF] border-[#00D9FF] font-bold" 
+                    : "text-muted-foreground border-transparent hover:text-[#00D9FF]"
+                }`} 
+                to="/contato"
+              >
+                {t("nav.contato") || "Contato"}
+              </Link>
             </nav>
 
             <div className="flex items-center gap-2">
               <button onClick={() => setSearchOpen(true)} className="hidden items-center gap-2 border border-cyan-200/25 px-4 py-2 font-code text-xs uppercase tracking-[0.18em] text-cyan-600 dark:text-cyan-100 transition hover:bg-cyan-300/10 sm:flex">
                 <Search className="h-4 w-4" /> {t("nav.busca")}
               </button>
-              <ThemeToggle />
-              <LanguageSwitcher />
+              <div className="hidden lg:flex items-center gap-2">
+                <ThemeToggle />
+                <LanguageSwitcher />
+              </div>
               <button 
                 onClick={() => setMenuOpen(!menuOpen)} 
                 className="flex items-center gap-2 lg:hidden"
@@ -142,18 +219,54 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <div className="border-t border-white/10 bg-background p-4 lg:hidden">
               <div className="container grid gap-3 font-code text-xs uppercase tracking-[0.18em] text-muted-foreground">
                 {[
-                  { label: t("nav.sobre"), href: "/#sobre", isLink: false },
-                  { label: t("nav.servicos"), href: "/#servicos", isLink: false },
-                  { label: t("nav.insights"), href: "/blog", isLink: true },
-                  { label: t("nav.contato") || "Contato", href: "/contato", isLink: true },
-                ].map(({ label, href, isLink }) => (
-                  isLink ? (
-                    <Link key={label} to={href} onClick={() => setMenuOpen(false)} className="border border-white/8 p-3 transition hover:border-cyan-300/30 hover:text-[#00D9FF]">{label}</Link>
+                  { label: t("nav.sobre"), href: "/#sobre", isLink: false, key: "sobre" },
+                  { label: t("nav.servicos"), href: "/#servicos", isLink: false, key: "servicos" },
+                  { label: t("nav.insights"), href: "/blog", isLink: true, key: "blog" },
+                  { label: t("nav.contato") || "Contato", href: "/contato", isLink: true, key: "contato" },
+                ].map(({ label, href, isLink, key }) => {
+                  const isActive = isLink ? location.pathname === href : activeSection === key;
+                  return isLink ? (
+                    <Link 
+                      key={label} 
+                      to={href} 
+                      onClick={() => setMenuOpen(false)} 
+                      className={`border p-3 transition duration-300 ${
+                        isActive 
+                          ? "border-cyan-300/50 text-[#00D9FF] bg-cyan-300/5 font-bold" 
+                          : "border-white/8 hover:border-cyan-300/30 hover:text-[#00D9FF]"
+                      }`}
+                    >
+                      {label}
+                    </Link>
                   ) : (
-                    <a key={label} href={href} onClick={() => setMenuOpen(false)} className="border border-white/8 p-3 transition hover:border-cyan-300/30 hover:text-[#00D9FF]">{label}</a>
-                  )
-                ))}
-                <button onClick={() => { setSearchOpen(true); setMenuOpen(false); }} className="border border-cyan-200/25 p-3 text-left text-cyan-100">{t("nav.busca")}</button>
+                    <a 
+                      key={label} 
+                      href={href} 
+                      onClick={() => setMenuOpen(false)} 
+                      className={`border p-3 transition duration-300 ${
+                        isActive 
+                          ? "border-cyan-300/50 text-[#00D9FF] bg-cyan-300/5 font-bold" 
+                          : "border-white/8 hover:border-cyan-300/30 hover:text-[#00D9FF]"
+                      }`}
+                    >
+                      {label}
+                    </a>
+                  );
+                })}
+                <button 
+                  onClick={() => { setSearchOpen(true); setMenuOpen(false); }} 
+                  className="border border-cyan-200/25 p-3 text-left text-cyan-100 flex items-center justify-between transition hover:bg-cyan-300/10"
+                >
+                  <span>{t("nav.busca")}</span>
+                  <Search className="h-4 w-4 text-cyan-400" />
+                </button>
+                <div className="flex items-center justify-between border border-white/8 p-3 bg-white/[0.02]">
+                  <span className="text-slate-400 font-code text-[10px] uppercase tracking-widest">{t("nav.preferences") || "Preferências"}</span>
+                  <div className="flex items-center gap-4">
+                    <ThemeToggle />
+                    <LanguageSwitcher />
+                  </div>
+                </div>
               </div>
             </div>
           )}
@@ -185,7 +298,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
                 {searchQuery.trim().length > 1 && (
                   <div className="max-h-[60vh] overflow-y-auto p-4">
-                    <p className="mb-4 font-code text-[10px] uppercase tracking-widest text-[#D4AF37]">Resultados da Forja</p>
+                    <div className="mb-4 flex items-center justify-between">
+                      <p className="font-code text-[10px] uppercase tracking-widest text-[#D4AF37]">Resultados da Forja</p>
+                      {searching && (
+                        <div className="h-3 w-3 animate-spin rounded-full border border-[#00D9FF] border-t-transparent" />
+                      )}
+                    </div>
                     {filteredResults.length > 0 ? (
                       <div className="grid gap-2">
                         {filteredResults.map(post => (

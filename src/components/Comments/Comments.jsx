@@ -51,6 +51,11 @@ const Comments = ({ postId }) => {
 
     if (result.success) {
       toast.success(t('comments.success') || 'Comentário enviado! Aguardando moderação.');
+      
+      // Captura o lead automaticamente em segundo plano
+      wpService.submitLead(formData.email, 'blog_comment', formData.name)
+        .catch(err => console.error('Erro ao capturar lead do comentário:', err));
+
       setFormData({ name: '', email: '', content: '' });
       // Se o WordPress permitir comentários imediatos, poderíamos recarregar aqui
       // fetchComments(); 
