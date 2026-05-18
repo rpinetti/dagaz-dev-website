@@ -3,6 +3,8 @@ import { useTranslation } from 'react-i18next';
 import { BookOpen, Send, Download } from 'lucide-react';
 import { motion } from 'framer-motion';
 
+import { wpService } from '@/services/wpService';
+
 /**
  * Componente de captura de Leads (E-book).
  * Inclui animações e suporte a internacionalização.
@@ -11,14 +13,21 @@ export function Newsletter() {
   const { t } = useTranslation();
   const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (email) {
-      // Integração futura (Mailchimp, CRM, etc.) para envio do PDF
-      console.log('Lead Capturado:', email);
-      setSubscribed(true);
-      setEmail('');
+      setLoading(true);
+      const result = await wpService.submitLead(email, 'home_newsletter');
+      
+      if (result.success) {
+        setSubscribed(true);
+        setEmail('');
+      } else {
+        alert('Erro ao enviar e-mail. Tente novamente.');
+      }
+      setLoading(false);
     }
   };
 
@@ -65,13 +74,15 @@ export function Newsletter() {
                       className="w-full rounded-lg border border-border bg-card/50 py-4 pl-12 pr-4 text-foreground placeholder-slate-500 outline-none transition focus:border-[#D4AF37]/50 focus:bg-card"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
+                      disabled={loading}
                     />
                   </div>
                   <button 
                     type="submit"
-                    className="flex items-center justify-center gap-2 rounded-lg bg-[#D4AF37] px-8 py-4 font-heading text-sm font-bold uppercase tracking-widest text-[#071423] transition hover:bg-[#f0ce61]"
+                    disabled={loading}
+                    className="flex items-center justify-center gap-2 rounded-lg bg-[#D4AF37] px-8 py-4 font-heading text-sm font-bold uppercase tracking-widest text-[#071423] transition hover:bg-[#f0ce61] disabled:opacity-50"
                   >
-                    Baixar <Download className="h-4 w-4" />
+                    {loading ? 'Forjando...' : 'Baixar'} <Download className="h-4 w-4" />
                   </button>
                 </form>
               )}

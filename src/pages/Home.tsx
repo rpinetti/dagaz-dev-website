@@ -56,10 +56,10 @@ import { wpService } from "@/services/wpService";
 import { OptimizedImage } from "@/components/OptimizedImage";
 import testimonialsData from "@/data/testimonials.json";
 
-const heroImage = "https://d2xsxph8kpxj0f.cloudfront.net/310519663628243590/XyUenGTrKRhDXVbbUSRY3m/dagaz-hero-cyber-forge-8PDWLYRFL4xH3A669uxTVa.webp";
-const runeSeal = "https://d2xsxph8kpxj0f.cloudfront.net/310519663628243590/XyUenGTrKRhDXVbbUSRY3m/dagaz-rune-seal-XErBXwLt334kDk7sbfa43q.webp";
-const servicesImage = "https://d2xsxph8kpxj0f.cloudfront.net/310519663628243590/XyUenGTrKRhDXVbbUSRY3m/dagaz-services-forge-panels-DzReZnaaEjcPVgNkoqTJkA.webp";
-const insightsImage = "https://d2xsxph8kpxj0f.cloudfront.net/310519663628243590/XyUenGTrKRhDXVbbUSRY3m/dagaz-insights-editorial-Zpdxpe4MKtf2JAEDbSqKEX.webp";
+const heroImage = "./image/dagaz-hero-cyber-forge-8PDWLYRFL4xH3A669uxTVa.webp";
+const runeSeal = "./image/dagaz-rune-seal-XErBXwLt334kDk7sbfa43q.webp";
+const servicesImage = "./image/dagaz-services-forge-panels-DzReZnaaEjcPVgNkoqTJkA.webp";
+const insightsImage = "./image/dagaz-insights-editorial-Zpdxpe4MKtf2JAEDbSqKEX.webp";
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return <p className="font-code text-[11px] uppercase tracking-[0.28em] text-[#D4AF37]">{children}</p>;
@@ -114,19 +114,24 @@ export default function Home() {
 
   const philosophyCards = useMemo(() => [
     {
-      icon: Sparkles,
+      image: "/icons/Explorador.png",
       title: t("about.philosophy.clarity.title"),
       text: t("about.philosophy.clarity.description"),
     },
     {
-      icon: Zap,
+      image: "/icons/Ferreiro.png",
       title: t("about.philosophy.transformation.title"),
       text: t("about.philosophy.transformation.description"),
     },
     {
-      icon: Target,
+      image: "/icons/Berserker.png",
       title: t("about.philosophy.breakthrough.title"),
       text: t("about.philosophy.breakthrough.description"),
+    },
+    {
+      image: "/icons/Jarl.png",
+      title: t("about.philosophy.leadership.title"),
+      text: t("about.philosophy.leadership.description"),
     },
   ], [t]);
 
@@ -175,7 +180,7 @@ export default function Home() {
             fetchPriority="high"
           />
         </div>
-        
+
         {/* Partículas Dinâmicas (Fagulhas da Forja) */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
           {[...Array(15)].map((_, i) => (
@@ -263,8 +268,8 @@ export default function Home() {
                 className="runic-panel group p-8 transition hover:border-cyan-300/40 hover:shadow-[0_0_30px_rgba(0,217,255,0.15)]"
               >
                 <div className="relative z-10">
-                  <div className="mb-6 flex h-12 w-12 items-center justify-center rounded border border-[#D4AF37]/30 bg-[#D4AF37]/10 text-[#D4AF37] transition group-hover:bg-[#D4AF37] group-hover:text-[#071423]">
-                    <card.icon size={24} />
+                  <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-lg border border-[#D4AF37]/30 bg-[#D4AF37]/10 p-2 transition group-hover:border-[#D4AF37] group-hover:bg-[#D4AF37]/20">
+                    <img src={card.image} alt={card.title} className="h-full w-full object-contain drop-shadow-md" />
                   </div>
                   <h3 className="mb-4 font-heading text-xl font-bold text-foreground">{card.title}</h3>
                   <p className="leading-7 text-muted-foreground">{card.text}</p>
@@ -295,16 +300,17 @@ export default function Home() {
 
             <div className="grid gap-6 sm:grid-cols-2">
               {services.map((service, i) => (
-                <Dialog key={service.title}>
-                  <DialogTrigger asChild>
-                    <motion.div
-                      initial={{ opacity: 0, y: 20 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: i * 0.1 }}
-                      whileHover={{ y: -5, scale: 1.02 }}
-                      className="runic-panel p-6 hover:shadow-[0_0_20px_rgba(0,217,255,0.1)] transition-all cursor-pointer"
-                    >
+                <motion.div
+                  key={service.title}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.1 }}
+                  whileHover={{ y: -5, scale: 1.02 }}
+                  className="runic-panel hover:shadow-[0_0_20px_rgba(0,217,255,0.1)] transition-all cursor-pointer flex flex-col h-full"
+                >
+                  <Dialog>
+                    <DialogTrigger className="text-left w-full h-full p-6 focus:outline-none flex-1">
                       <div className="relative z-10">
                         <service.icon className="mb-4 h-8 w-8 text-[#00D9FF]" />
                         <h3 className="mb-2 font-heading text-lg font-bold text-foreground">{service.title}</h3>
@@ -317,37 +323,37 @@ export default function Home() {
                           ))}
                         </div>
                       </div>
-                    </motion.div>
-                  </DialogTrigger>
-                  <DialogContent className="sm:max-w-[600px] runic-panel border-cyan-300/30 bg-background/95 backdrop-blur-xl">
-                    <DialogHeader>
-                      <DialogTitle className="flex items-center gap-3 text-2xl font-heading text-cyan-100">
-                        <service.icon className="h-6 w-6 text-[#00D9FF]" />
-                        {service.title}
-                      </DialogTitle>
-                      <DialogDescription className="text-muted-foreground mt-4 text-base leading-relaxed">
-                        {service.text}
-                        <br /><br />
-                        Nossos especialistas estão prontos para desenhar a arquitetura ideal e acelerar a jornada digital do seu negócio com as melhores práticas de mercado e foco absoluto em performance e segurança.
-                      </DialogDescription>
-                    </DialogHeader>
-                    <div className="mt-6 border-t border-white/10 pt-6">
-                      <h4 className="font-code text-xs uppercase tracking-widest text-[#D4AF37] mb-4">Tecnologias & Foco</h4>
-                      <div className="flex flex-wrap gap-2">
-                        {service.tags.map(tag => (
-                          <span key={tag} className="border border-cyan-500/30 bg-cyan-500/10 px-3 py-1 font-code text-xs uppercase tracking-wider text-[#00D9FF]">
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-                      <div className="mt-8">
-                         <Link to="/contato" className="inline-flex w-full justify-center items-center gap-2 font-heading text-sm font-bold uppercase tracking-[0.16em] text-[#071423] bg-[#00D9FF] hover:bg-cyan-300 px-6 py-4 transition">
+                    </DialogTrigger>
+                    <DialogContent className="sm:max-w-[600px] runic-panel border-cyan-300/30 bg-background/95 backdrop-blur-xl">
+                      <DialogHeader>
+                        <DialogTitle className="flex items-center gap-3 text-2xl font-heading text-cyan-100">
+                          <service.icon className="h-6 w-6 text-[#00D9FF]" />
+                          {service.title}
+                        </DialogTitle>
+                        <DialogDescription className="text-muted-foreground mt-4 text-base leading-relaxed">
+                          {service.text}
+                          <br /><br />
+                          Nossos especialistas estão prontos para desenhar a arquitetura ideal e acelerar a jornada digital do seu negócio com as melhores práticas de mercado e foco absoluto em performance e segurança.
+                        </DialogDescription>
+                      </DialogHeader>
+                      <div className="mt-6 border-t border-white/10 pt-6">
+                        <h4 className="font-code text-xs uppercase tracking-widest text-[#D4AF37] mb-4">Tecnologias & Foco</h4>
+                        <div className="flex flex-wrap gap-2">
+                          {service.tags.map(tag => (
+                            <span key={tag} className="border border-cyan-500/30 bg-cyan-500/10 px-3 py-1 font-code text-xs uppercase tracking-wider text-[#00D9FF]">
+                              {tag}
+                            </span>
+                          ))}
+                        </div>
+                        <div className="mt-8">
+                          <Link to="/contato" className="inline-flex w-full justify-center items-center gap-2 font-heading text-sm font-bold uppercase tracking-[0.16em] text-[#071423] bg-[#00D9FF] hover:bg-cyan-300 px-6 py-4 transition">
                             Falar com um Especialista <ArrowRight className="h-4 w-4" />
-                         </Link>
+                          </Link>
+                        </div>
                       </div>
-                    </div>
-                  </DialogContent>
-                </Dialog>
+                    </DialogContent>
+                  </Dialog>
+                </motion.div>
               ))}
             </div>
           </div>

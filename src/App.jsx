@@ -9,6 +9,7 @@ const Article = lazy(() => import('./pages/Article'));
 const Contact = lazy(() => import('./pages/Contact'));
 const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy'));
 const TermsOfService = lazy(() => import('./pages/TermsOfService'));
+const Links = lazy(() => import('./pages/Links'));
 
 // Componente de loading simples para o Suspense
 const PageLoader = () => (
@@ -29,6 +30,9 @@ import { CookieConsentBanner } from "@/components/CookieConsentBanner";
 import SEO from './components/SEO';
 import { ScrollToTop } from './components/ScrollToTop';
 
+// Componente auxiliar para rotas com Layout
+const WithLayout = ({ children }) => <Layout>{children}</Layout>;
+
 function App() {
   return (
     <ErrorBoundary>
@@ -38,31 +42,37 @@ function App() {
             <TooltipProvider>
               <BrowserRouter>
                 <ScrollToTop />
-                <Layout>
-                  <Suspense fallback={<PageLoader />}>
-                    <Routes>
-                      <Route path="/" element={<Home />} />
-                      <Route path="/blog" element={<Blog />} />
-                      <Route path="/artigo/:id" element={<Article />} />
-                      <Route path="/sobre" element={
+                <Suspense fallback={<PageLoader />}>
+                  <Routes>
+                    {/* Rota sem Layout (Link in Bio) */}
+                    <Route path="/links" element={<Links />} />
+                    
+                    {/* Rotas normais (Com Header/Footer) */}
+                    <Route path="/" element={<WithLayout><Home /></WithLayout>} />
+                    <Route path="/blog" element={<WithLayout><Blog /></WithLayout>} />
+                    <Route path="/artigo/:id" element={<WithLayout><Article /></WithLayout>} />
+                    <Route path="/sobre" element={
+                      <WithLayout>
                         <div className="container" style={{ marginTop: '2rem' }}>
                           <SEO title="O Mentor" description="Conheça a jornada de Caio Dagaz, arquiteto SAP e mentor." url="/sobre" />
                           <h1>O Mentor</h1>
                           <p>Em construção...</p>
                         </div>
-                      } />
-                      <Route path="/contato" element={<Contact />} />
-                      <Route path="/privacidade" element={<PrivacyPolicy />} />
-                      <Route path="/termos" element={<TermsOfService />} />
-                      <Route path="*" element={
+                      </WithLayout>
+                    } />
+                    <Route path="/contato" element={<WithLayout><Contact /></WithLayout>} />
+                    <Route path="/privacidade" element={<WithLayout><PrivacyPolicy /></WithLayout>} />
+                    <Route path="/termos" element={<WithLayout><TermsOfService /></WithLayout>} />
+                    <Route path="*" element={
+                      <WithLayout>
                         <div className="container" style={{ marginTop: '2rem' }}>
                           <SEO title="404 - Não Encontrado" description="Página não encontrada no portal Dagaz.Dev." />
                           <h1>404 - Fora do mapa, guerreiro!</h1>
                         </div>
-                      } />
-                    </Routes>
-                  </Suspense>
-                </Layout>
+                      </WithLayout>
+                    } />
+                  </Routes>
+                </Suspense>
               </BrowserRouter>
               <WhatsAppButton />
               <CookieConsentBanner />

@@ -119,6 +119,32 @@ export const wpService = {
   },
 
   /**
+   * Captura lead de e-mail (Newsletter / E-book)
+   */
+  async submitLead(email, source = 'home') {
+    try {
+      const response = await fetch(`${BASE_URL}/dagaz/v1/lead`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, source }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Erro ao enviar e-mail');
+      }
+
+      return { success: true, data };
+    } catch (error) {
+      console.error('Erro no wpService.submitLead:', error);
+      return { success: false, error: error.message };
+    }
+  },
+
+  /**
    * Helper to format WP response to our frontend format
    */
   formatPost(wpPost) {
