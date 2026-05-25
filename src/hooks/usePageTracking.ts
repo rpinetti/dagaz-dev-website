@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useLocation } from 'wouter';
+import { useLocation } from 'react-router-dom';
 import { trackPageView } from '@/services/analytics';
 
 /**
@@ -7,15 +7,15 @@ import { trackPageView } from '@/services/analytics';
  * Deve ser usado no componente raiz (App.tsx)
  */
 export const usePageTracking = () => {
-  const [location] = useLocation();
+  const location = useLocation();
 
   useEffect(() => {
     // Rastrear visualização de página quando a rota muda
-    trackPageView(location, document.title);
+    trackPageView(location.pathname + location.search, document.title);
 
     // Scroll para o topo da página
     window.scrollTo(0, 0);
-  }, [location]);
+  }, [location.pathname, location.search]);
 };
 
 export default usePageTracking;

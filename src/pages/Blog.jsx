@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import { Search } from 'lucide-react';
+import { motion } from 'framer-motion';
 import Card from '../components/Card/Card';
 import SEO from '../components/SEO';
 import styles from './Blog.module.css';
@@ -10,6 +11,7 @@ import { wpService } from '../services/wpService';
 const Blog = () => {
   const { t, i18n } = useTranslation();
   const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState(searchParams.get('search') || '');
   const [activeCategory, setActiveCategory] = useState('all');
   const [posts, setPosts] = useState([]);
@@ -110,16 +112,25 @@ const Blog = () => {
         </div>
       ) : posts.length > 0 ? (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: '2rem' }}>
-          {posts.map(post => (
-            <Card 
+          {posts.map((post, i) => (
+            <motion.div
               key={post.id}
-              title={post.title} 
-              subtitle={`${post.date} • ${post.readingTime} ${t('blog.reading_time')}`}
-              onClick={() => window.location.href = `/artigo/${post.id}`}
+              initial={{ opacity: 0, y: 15 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.05 }}
+              className="h-full"
             >
-              <p style={{ marginBottom: '1rem' }}>{post.desc}</p>
-              <span className="text-highlight" style={{ fontSize: '0.875rem', fontFamily: 'var(--font-heading)', fontWeight: 'bold' }}>{t('blog.read_more')} &rarr;</span>
-            </Card>
+              <Card 
+                title={post.title} 
+                subtitle={`${post.date} • ${post.readingTime} ${t('blog.reading_time')}`}
+                onClick={() => navigate(`/artigo/${post.id}`)}
+                className="runic-panel border-cyan-300/10 hover:border-cyan-300/40 hover:shadow-[0_0_25px_rgba(0,217,255,0.15)] transition-all h-full"
+              >
+                <p style={{ marginBottom: '1rem' }}>{post.desc}</p>
+                <span className="text-highlight" style={{ fontSize: '0.875rem', fontFamily: 'var(--font-heading)', fontWeight: 'bold' }}>{t('blog.read_more')} &rarr;</span>
+              </Card>
+            </motion.div>
           ))}
         </div>
       ) : (

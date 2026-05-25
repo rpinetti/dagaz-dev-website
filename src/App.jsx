@@ -29,6 +29,15 @@ import { CookieConsentBanner } from "@/components/CookieConsentBanner";
 
 import SEO from './components/SEO';
 import { ScrollToTop } from './components/ScrollToTop';
+import { useCookieConsentGA4 } from '@/hooks/useCookieConsentGA4';
+import { usePageTracking } from '@/hooks/usePageTracking';
+
+// Helper component to initialize hooks within the router context
+function AnalyticsTracker() {
+  useCookieConsentGA4();
+  usePageTracking();
+  return null;
+}
 
 // Componente auxiliar para rotas com Layout
 const WithLayout = ({ children }) => <Layout>{children}</Layout>;
@@ -42,6 +51,7 @@ function App() {
             <TooltipProvider>
               <BrowserRouter>
                 <ScrollToTop />
+                <AnalyticsTracker />
                 <Suspense fallback={<PageLoader />}>
                   <Routes>
                     {/* Rota sem Layout (Link in Bio) */}

@@ -2,8 +2,15 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { BookOpen, Send, Download } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { toast } from 'sonner';
 
 import { wpService } from '@/services/wpService';
+
+const FREE_DOMAINS = [
+  'gmail.com', 'hotmail.com', 'yahoo.com', 'outlook.com', 'live.com',
+  'aol.com', 'icloud.com', 'zoho.com', 'protonmail.com', 'gmx.com',
+  'yandex.com', 'mail.com', 'uol.com.br', 'bol.com.br', 'terra.com.br'
+];
 
 /**
  * Componente de captura de Leads (E-book).
@@ -12,8 +19,20 @@ import { wpService } from '@/services/wpService';
 export function Newsletter() {
   const { t } = useTranslation();
   const [email, setEmail] = useState('');
+  const [isFreeDomain, setIsFreeDomain] = useState(false);
   const [subscribed, setSubscribed] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  const handleEmailChange = (val: string) => {
+    setEmail(val);
+    const parts = val.split('@');
+    if (parts.length > 1) {
+      const domain = parts[1].toLowerCase();
+      setIsFreeDomain(FREE_DOMAINS.some(d => domain.endsWith(d)));
+    } else {
+      setIsFreeDomain(false);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -24,8 +43,10 @@ export function Newsletter() {
       if (result.success) {
         setSubscribed(true);
         setEmail('');
+        setIsFreeDomain(false);
+        toast.success('Sucesso! Guia enviado para o seu e-mail.');
       } else {
-        alert('Erro ao enviar e-mail. Tente novamente.');
+        toast.error('Erro ao enviar e-mail. Tente novamente.');
       }
       setLoading(false);
     }
@@ -73,9 +94,14 @@ export function Newsletter() {
                       placeholder="seu@email.com corporativo"
                       className="w-full rounded-lg border border-border bg-card/50 py-4 pl-12 pr-4 text-foreground placeholder-slate-500 outline-none transition focus:border-[#D4AF37]/50 focus:bg-card"
                       value={email}
-                      onChange={(e) => setEmail(e.target.value)}
+                      onChange={(e) => handleEmailChange(e.target.value)}
                       disabled={loading}
                     />
+                    {isFreeDomain && (
+                      <p className="mt-1.5 text-yellow-500/80 font-code text-[9px] uppercase tracking-wider text-left">
+                        Recomendamos usar seu e-mail corporativo.
+                      </p>
+                    )}
                   </div>
                   <button 
                     type="submit"

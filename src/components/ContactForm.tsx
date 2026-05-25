@@ -252,6 +252,7 @@ export function ContactForm() {
           </label>
           <Select value={formData.service} onValueChange={handleServiceChange} disabled={isSubmitting}>
             <SelectTrigger
+              id="service"
               className={`bg-white/[0.05] border ${
                 errors.service ? 'border-red-500/50' : 'border-white/10'
               } text-white focus:border-cyan-300/50 focus:bg-white/[0.08]`}

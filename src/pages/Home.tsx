@@ -21,11 +21,13 @@ import {
   ArrowDownToLine,
   ArrowRight,
   ArrowUpRight,
+  Award,
   BookOpenText,
   BriefcaseBusiness,
   Building2,
   CheckCircle2,
   ChevronRight,
+  Cloud,
   Code2,
   Cpu,
   Download,
@@ -68,6 +70,36 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
 export default function Home() {
   const { t, i18n } = useTranslation();
   const { language } = useLanguage();
+
+  const homeSchema = {
+    "@context": "https://schema.org",
+    "@type": "ProfessionalService",
+    "name": "Dagaz.Dev",
+    "alternateName": "Dagaz Dev",
+    "description": t("hero.description"),
+    "url": "https://dagaz.dev",
+    "logo": "https://dagaz.dev/favicon.svg",
+    "image": "https://dagaz.dev/image/dagaz-hero-cyber-forge-8PDWLYRFL4xH3A669uxTVa.webp",
+    "address": {
+      "@type": "PostalAddress",
+      "addressCountry": "BR",
+      "addressLocality": "São Paulo",
+      "addressRegion": "SP"
+    },
+    "founder": {
+      "@type": "Person",
+      "name": "Caio Dagaz",
+      "jobTitle": "Principal SAP Solutions Architect & Mentor",
+      "sameAs": [
+        "https://www.linkedin.com/in/caiodagaz"
+      ]
+    },
+    "sameAs": [
+      "https://linkedin.com/company/dagaz-dev",
+      "https://instagram.com/dagaz.dev"
+    ],
+    "priceRange": "$$$"
+  };
 
   // Estados para dados dinâmicos
   const [latestPosts, setLatestPosts] = useState<any[]>([]);
@@ -169,6 +201,7 @@ export default function Home() {
         title={t("hero.title")}
         description={t("hero.description")}
         url="/"
+        schema={homeSchema}
       />
       <section className="relative overflow-hidden py-20 md:py-32">
         <div className="absolute inset-0 opacity-40">
@@ -360,6 +393,80 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Metrics & Certifications Section */}
+      <section className="bg-slate-900/50 py-24 border-y border-white/5 relative">
+        <div className="absolute inset-0 grid-forge opacity-20 pointer-events-none" />
+        <div className="container relative z-10">
+          <div className="grid gap-16 lg:grid-cols-2">
+            {/* Metrics */}
+            <div>
+              <SectionLabel>Performance & Impacto</SectionLabel>
+              <h2 className="mt-4 font-heading text-4xl font-bold text-foreground">A Forja em Números</h2>
+              <p className="mt-6 text-muted-foreground">
+                Resultados concretos gerados no coração dos sistemas corporativos mais complexos. Não apenas código, mas eficiência operacional.
+              </p>
+              
+              <div className="mt-10 grid gap-6 sm:grid-cols-2">
+                {[
+                  { value: "+15", label: "Anos de Expertise SAP", desc: "Forjados em grandes corporações e migrações globais." },
+                  { value: "+50", label: "Sistemas Modernizados", desc: "Do código legado ao ecossistema moderno em nuvem." },
+                  { value: "0", label: "Downtime Crítico", desc: "Garantia absoluta de continuidade operacional." },
+                  { value: "100%", label: "Clean Code", desc: "Arquitetura e código limpos, fáceis de manter." }
+                ].map((stat, i) => (
+                  <motion.div
+                    key={stat.label}
+                    initial={{ opacity: 0, y: 10 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: i * 0.1 }}
+                    className="border border-white/5 bg-white/[0.01] p-6 hover:border-cyan-500/25 transition"
+                  >
+                    <p className="font-heading text-4xl font-extrabold text-[#00D9FF]">{stat.value}</p>
+                    <p className="mt-2 font-heading text-sm font-bold text-foreground">{stat.label}</p>
+                    <p className="mt-1 text-xs text-muted-foreground">{stat.desc}</p>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+
+            {/* Certifications & Badges */}
+            <div className="flex flex-col justify-center">
+              <SectionLabel>Autoridade Técnica</SectionLabel>
+              <h2 className="mt-4 font-heading text-4xl font-bold text-foreground">Chancelas e Certificações</h2>
+              <p className="mt-6 text-muted-foreground">
+                Garantia técnica endossada pelas maiores autoridades globais em tecnologia da informação.
+              </p>
+
+              <div className="mt-10 grid gap-4 sm:grid-cols-2">
+                {[
+                  { title: "SAP Certified Associate", desc: "Solutions Architect & ABAP Specialist", icon: Cpu },
+                  { title: "AWS Solutions Architect", desc: "Arquitetura de Nuvem e BTP Integration", icon: Cloud },
+                  { title: "Scrum Master", desc: "Metodologias ágeis aplicadas ao ecossistema SAP", icon: Target },
+                  { title: "Clean ABAP Advocate", desc: "Pioneirismo em código limpo no mercado SAP", icon: Code2 }
+                ].map((cert, i) => (
+                  <motion.div
+                    key={cert.title}
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: i * 0.1 }}
+                    className="runic-panel p-5 flex items-start gap-4"
+                  >
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded border border-[#D4AF37]/30 bg-[#D4AF37]/10">
+                      <cert.icon className="h-5 w-5 text-[#D4AF37]" />
+                    </div>
+                    <div>
+                      <h4 className="font-heading text-sm font-bold text-foreground">{cert.title}</h4>
+                      <p className="mt-1 text-xs text-muted-foreground">{cert.desc}</p>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Testimonials */}
       {currentTestimonials.length > 0 && (
         <section className="bg-slate-900/30 py-24">
@@ -450,6 +557,49 @@ export default function Home() {
               ))}
             </div>
           )}
+        </div>
+      </section>
+
+      {/* SLA & Promessa de Aço */}
+      <section className="py-24 relative overflow-hidden">
+        <div className="container max-w-4xl relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="runic-panel p-8 md:p-12 border-cyan-300/30 text-center relative overflow-hidden"
+          >
+            {/* Glow decorativo */}
+            <div className="absolute -right-20 -top-20 h-40 w-40 rounded-full bg-[#00D9FF] opacity-10 blur-3xl" />
+            <div className="absolute -left-20 -bottom-20 h-40 w-40 rounded-full bg-[#D4AF37] opacity-10 blur-3xl" />
+
+            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full border border-[#D4AF37]/35 bg-[#D4AF37]/10 mb-6">
+              <ShieldCheck className="h-8 w-8 text-[#D4AF37]" />
+            </div>
+
+            <h3 className="font-heading text-2xl md:text-3xl font-bold text-foreground">
+              A Promessa de Aço: Migração sem Riscos e Sem Downtime
+            </h3>
+            <p className="mt-4 text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+              Sabemos que cada minuto inativo custa caro para a sua operação. Nossa abordagem de consultoria foca em arquitetura resiliente e processos blindados, garantindo uma transição para o S/4HANA segura, com transições em background e impacto operacional nulo.
+            </p>
+            
+            <div className="mt-8 flex flex-wrap justify-center gap-6 text-left border-t border-white/10 pt-8">
+              {[
+                { title: "Segurança de Dados", desc: "Backup e auditoria em tempo real em todas as etapas." },
+                { title: "Monitoramento Ativo", desc: "Observabilidade 360° pré e pós migração." },
+                { title: "Continuidade de Negócio", desc: "Operação crítica preservada sob SLA severo." }
+              ].map((item, i) => (
+                <div key={item.title} className="flex gap-3 max-w-xs">
+                  <CheckCircle2 className="h-5 w-5 shrink-0 text-[#00D9FF] mt-0.5" />
+                  <div>
+                    <h4 className="font-heading text-sm font-bold text-foreground">{item.title}</h4>
+                    <p className="mt-1 text-xs text-muted-foreground">{item.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </motion.div>
         </div>
       </section>
 
