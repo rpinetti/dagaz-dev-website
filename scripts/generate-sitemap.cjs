@@ -18,8 +18,21 @@ const staticRoutes = [
   { url: '/termos', priority: '0.3', changefreq: 'monthly' },
 ];
 
+const getDate = (value) => {
+  const date = value ? new Date(value) : new Date();
+  return Number.isNaN(date.getTime()) ? new Date().toISOString().slice(0, 10) : date.toISOString().slice(0, 10);
+};
+
+const escapeXml = (value) => String(value)
+  .replaceAll('&', '&amp;')
+  .replaceAll('<', '&lt;')
+  .replaceAll('>', '&gt;')
+  .replaceAll('"', '&quot;')
+  .replaceAll("'", '&apos;');
+
 async function generateSitemap() {
   let blogRoutes = [];
+  const generatedAt = getDate();
   
   try {
     console.log('Fetching blog post slugs from cms.dagaz.dev...');
@@ -31,7 +44,8 @@ async function generateSitemap() {
     
     if (Array.isArray(posts)) {
       blogRoutes = posts.map(post => ({
-        url: `/artigo/${post.slug}`,
+        url: `/artigo/${encodeURIComponent(post.slug)}`,
+        lastmod: getDate(post.modified_gmt || post.modified || post.date),
         priority: '0.6',
         changefreq: 'monthly'
       }));
@@ -39,14 +53,29 @@ async function generateSitemap() {
     }
   } catch (error) {
     console.error('⚠️ Warning: Could not fetch posts from WordPress API for sitemap. Using only static routes.', error.message);
+    const sitemapPath = path.join(__dirname, '../public/sitemap.xml');
+    if (fs.existsSync(sitemapPath)) {
+      const existingSitemap = fs.readFileSync(sitemapPath, 'utf8');
+      blogRoutes = [...existingSitemap.matchAll(/<url>\s*<loc>https:\/\/dagaz\.dev(\/artigo\/[^<]+)<\/loc>(?:\s*<lastmod>([^<]+)<\/lastmod>)?/g)]
+        .map(([, url, lastmod]) => ({
+          url,
+          lastmod: lastmod || generatedAt,
+          priority: '0.6',
+          changefreq: 'monthly'
+        }));
+    }
   }
 
-  const allRoutes = [...staticRoutes, ...blogRoutes];
+  const allRoutes = [
+    ...staticRoutes.map(route => ({ ...route, lastmod: generatedAt })),
+    ...blogRoutes
+  ];
 
   const sitemapContent = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${allRoutes.map(route => `  <url>
-    <loc>${SITE_URL}${route.url}</loc>
+    <loc>${escapeXml(`${SITE_URL}${route.url}`)}</loc>
+    <lastmod>${escapeXml(route.lastmod)}</lastmod>
     <changefreq>${route.changefreq}</changefreq>
     <priority>${route.priority}</priority>
   </url>`).join('\n')}

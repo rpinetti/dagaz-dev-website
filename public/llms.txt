@@ -1,0 +1,28 @@
+# Dagaz.Dev
+
+> Consultoria e desenvolvimento para modernização, integração e inovação em ambientes SAP.
+
+## Páginas principais
+
+- [Página inicial](https://dagaz.dev/)
+- [Sobre a Dagaz.Dev](https://dagaz.dev/#sobre)
+- [Serviços e artigos](https://dagaz.dev/blog)
+- [Contato](https://dagaz.dev/contato)
+
+## Informações legais
+
+- [Política de privacidade](https://dagaz.dev/privacidade)
+- [Termos de uso](https://dagaz.dev/termos)
+
+## Contato e perfis
+
+- E-mail: [hello@dagaz.dev](mailto:hello@dagaz.dev)
+- [LinkedIn](https://www.linkedin.com/company/dagaz-dev)
+- [Instagram](https://www.instagram.com/dagaz.dev)
+- [GitHub](https://github.com/dagaz-dev)
+
+## Formatos para agentes
+
+- [Representação Markdown da página inicial](https://dagaz.dev/index.md)
+- MCP Server Card: [server-card.json](https://dagaz.dev/.well-known/mcp/server-card.json)
+- MCP endpoint: https://dagaz.dev/mcp
