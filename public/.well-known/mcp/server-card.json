@@ -1,17 +1,19 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/mcp-server-card/v1.json",
   "version": "1.0",
+  "protocolVersion": "2025-03-26",
+  "description": "Read-only business information and contact details for Dagaz.Dev.",
   "serverInfo": {
     "name": "dagaz-dev",
     "title": "Dagaz.Dev",
-    "version": "1.0.0",
-    "description": "Read-only business information and contact details for Dagaz.Dev."
+    "version": "1.0.0"
   },
   "transport": {
     "type": "streamable-http",
-    "url": "https://dagaz.dev/mcp"
+    "endpoint": "/mcp"
   },
   "capabilities": {
     "tools": {}
-  }
+  },
+  "tools": "dynamic"
 }

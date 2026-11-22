@@ -19,8 +19,8 @@ function AnimatedCounter({ value, delay = 0 }: { value: string; delay?: number }
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true, margin: '-60px' });
 
-  const numeric = parseInt(value, 10);
-  const isNumeric = !isNaN(numeric);
+  const numeric = Number.parseInt(value, 10);
+  const isNumeric = !Number.isNaN(numeric);
 
   // Spring do valor numérico
   const spring = useSpring(0, { stiffness: 60, damping: 18 });
