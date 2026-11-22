@@ -16,14 +16,14 @@ const Comments = ({ postId }) => {
     content: ''
   });
 
-  const fetchComments = async () => {
-    setLoading(true);
-    const data = await wpService.getComments(postId);
-    setComments(data);
-    setLoading(false);
-  };
-
   useEffect(() => {
+    const fetchComments = async () => {
+      setLoading(true);
+      const data = await wpService.getComments(postId);
+      setComments(data);
+      setLoading(false);
+    };
+
     if (postId) {
       fetchComments();
     }

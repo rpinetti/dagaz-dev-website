@@ -41,7 +41,7 @@ app.get('/health-check', (req, res) => {
 });
 
 // Rota coringa ("catch-all") para o React Router funcionar (SPA)
-app.get('*', (req, res) => {
+app.get(/.*/, (req, res) => {
   if (fs.existsSync(indexPath)) {
     res.sendFile(indexPath);
   } else {

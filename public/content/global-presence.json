@@ -1,0 +1,65 @@
+{
+  "countries": [
+    {
+      "id": "br",
+      "name": "Brasil",
+      "flag": "🇧🇷",
+      "hq": true,
+      "continents": "América do Sul",
+      "capital": { "city": "Brasília", "lat": -15.7797, "lng": -47.9297 },
+      "clients": [
+        { "name": "Dexco", "industry": "Construção Civil", "city": "São Paulo", "lat": -23.55, "lng": -46.63 },
+        { "name": "Petrobras", "industry": "Petróleo e Gás", "city": "Rio de Janeiro", "lat": -22.90, "lng": -43.17 },
+        { "name": "ACHE", "industry": "Saúde", "city": "Ipojuca", "lat": -8.2724, "lng": -34.9466 },
+        { "name": "Syngenta", "industry": "Agronegócio", "city": "Uberlândia", "lat": -18.916, "lng": -48.254 },
+        { "name": "Caixa Econômica Federal", "industry": "Financeiro", "city": "Brasília", "lat": -15.7797, "lng": -47.9297 },
+        { "name": "Embraco", "industry": "Refrigeração", "city": "Joinville", "lat": -26.3029, "lng": -48.8547 }
+      ]
+    },
+    {
+      "id": "us",
+      "name": "EUA",
+      "flag": "🇺🇸",
+      "hq": false,
+      "continents": "América do Norte",
+      "capital": { "city": "Washington D.C.", "lat": 38.9072, "lng": -77.0369 },
+      "clients": [
+        { "name": "Walmart", "industry": "Varejo", "city": "Bentonville", "lat": 36.37, "lng": -94.21 }
+      ]
+    },
+    {
+      "id": "ar",
+      "name": "Argentina",
+      "flag": "🇦🇷",
+      "hq": false,
+      "continents": "América do Sul",
+      "capital": { "city": "Buenos Aires", "lat": -34.6037, "lng": -58.3816 },
+      "clients": [
+        { "name": "Syngenta", "industry": "Agronegócio", "city": "Rosário", "lat": -31.6428, "lng": -60.7361 },
+        { "name": "Holcim", "industry": "Construção Civil", "city": "Buenos Aires", "lat": -34.6037, "lng": -58.3816 }
+      ]
+    },
+    {
+      "id": "co",
+      "name": "Colômbia",
+      "flag": "🇨🇴",
+      "hq": false,
+      "continents": "América do Sul",
+      "capital": { "city": "Bogotá", "lat": 4.7110, "lng": -74.0721 },
+      "clients": [
+        { "name": "Holcim", "industry": "Construção Civil", "city": "Bogotá", "lat": 4.7110, "lng": -74.0721 }
+      ]
+    },
+    {
+      "id": "it",
+      "name": "Itália",
+      "flag": "🇮🇹",
+      "hq": false,
+      "continents": "Europa",
+      "capital": { "city": "Roma", "lat": 41.9028, "lng": 12.4964 },
+      "clients": [
+        { "name": "FIAT", "industry": "Automotivo", "city": "Turim", "lat": 45.07, "lng": 7.68 }
+      ]
+    }
+  ]
+}
