@@ -11,6 +11,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="DAGAZ.DEV - Codando como Vikings. Consultoria SAP e Desenvolvimento." />
   <link rel="canonical" href="https://dagaz.dev/" />
+  <link rel="alternate" type="text/markdown" href="https://dagaz.dev/index.md" />
 
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website" />
@@ -25,6 +26,51 @@
   <meta property="twitter:title" content="DAGAZ.DEV | Codando Como Vikings" />
   <meta property="twitter:description" content="DAGAZ.DEV - Codando como Vikings. Consultoria SAP e Desenvolvimento." />
   <meta property="twitter:image" content="https://dagaz.dev/og-image.jpg" />
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": "https://dagaz.dev/#organization",
+          "name": "Dagaz.Dev",
+          "url": "https://dagaz.dev/",
+          "logo": "https://dagaz.dev/favicons/android-chrome-512x512.png",
+          "description": "Consultoria e desenvolvimento para modernização, integração e inovação em ambientes SAP.",
+          "email": "hello@dagaz.dev",
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "São Paulo",
+            "addressRegion": "SP",
+            "addressCountry": "BR"
+          },
+          "sameAs": [
+            "https://www.linkedin.com/company/dagaz-dev",
+            "https://www.instagram.com/dagaz.dev",
+            "https://github.com/dagaz-dev"
+          ]
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://dagaz.dev/#website",
+          "url": "https://dagaz.dev/",
+          "name": "Dagaz.Dev",
+          "publisher": { "@id": "https://dagaz.dev/#organization" },
+          "inLanguage": "pt-BR"
+        },
+        {
+          "@type": "WebPage",
+          "@id": "https://dagaz.dev/#webpage",
+          "url": "https://dagaz.dev/",
+          "name": "Dagaz.Dev | Consultoria SAP e Desenvolvimento",
+          "isPartOf": { "@id": "https://dagaz.dev/#website" },
+          "about": { "@id": "https://dagaz.dev/#organization" },
+          "inLanguage": "pt-BR"
+        }
+      ]
+    }
+  </script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -45,7 +91,34 @@
 </head>
 
 <body>
-  <div id="root"></div>
+  <div id="root">
+    <main id="agent-content">
+      <header>
+        <p>DAGAZ.DEV · SAP · CÓDIGO · TRANSFORMAÇÃO</p>
+        <h1>Consultoria SAP e desenvolvimento para transformar sistemas complexos.</h1>
+        <p>A Dagaz.Dev ajuda empresas a modernizar, integrar e inovar no ecossistema SAP com estratégia, arquitetura e desenvolvimento.</p>
+      </header>
+      <section>
+        <h2>Serviços</h2>
+        <ul>
+          <li>Estratégia, roadmaps, governança e arquitetura SAP.</li>
+          <li>Desenvolvimento ABAP, SAP Fiori e SAP BTP.</li>
+          <li>Integrações por APIs, eventos e automação.</li>
+          <li>Consultoria, liderança técnica e mentoria para equipes.</li>
+        </ul>
+      </section>
+      <nav aria-label="Informações da Dagaz.Dev">
+        <h2>Saiba mais</h2>
+        <ul>
+          <li><a href="/sobre">Sobre a Dagaz.Dev</a></li>
+          <li><a href="/contato">Contato</a> · <a href="mailto:hello@dagaz.dev">hello@dagaz.dev</a></li>
+          <li><a href="/blog">Artigos e insights</a></li>
+          <li><a href="/privacidade">Política de privacidade</a></li>
+          <li><a href="/termos">Termos de uso</a></li>
+        </ul>
+      </nav>
+    </main>
+  </div>
   <script type="module" src="/src/main.jsx"></script>
 </body>
 

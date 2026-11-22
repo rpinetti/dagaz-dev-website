@@ -44,7 +44,7 @@ const Article = () => {
   if (!post) {
     return (
       <div className="container" style={{ padding: '8rem 0', textAlign: 'center' }}>
-        <h2>Artigo não encontrado.</h2>
+        <h1>Artigo não encontrado.</h1>
         <p style={{ color: 'var(--text-secondary)' }}>O pergaminho se perdeu na forja ou não está disponível neste idioma no WordPress.</p>
         <Link to="/blog" style={{ color: 'var(--color-viking-gold)', marginTop: '2rem', display: 'inline-block' }}>
           Voltar para A Forja

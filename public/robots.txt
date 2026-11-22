@@ -1,4 +1,6 @@
 User-agent: *
 Allow: /
+Content-Signal: search=yes, ai-train=no
 
+# dagaz.dev serves a modern developer website focusing on agent-readiness and AI technology
 Sitemap: https://dagaz.dev/sitemap.xml
