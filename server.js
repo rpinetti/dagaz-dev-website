@@ -82,8 +82,8 @@ app.use(express.json({ limit: '16kb' }));
 app.use((req, res, next) => {
   if (req.path === '/') {
     res.set('Link', [
-      '<https://dagaz.dev/llms.txt>; rel="describedby"; type="text/plain',
-      '<https://dagaz.dev/index.md>; rel="alternate"; type="text/markdown',
+      '<https://dagaz.dev/llms.txt>; rel="describedby"; type="text/plain"',
+      '<https://dagaz.dev/index.md>; rel="alternate"; type="text/markdown"',
     ].join(', '));
   }
   next();
@@ -103,6 +103,12 @@ app.get('/', (req, res, next) => {
 });
 
 app.get('/.well-known/mcp/server-card.json', (req, res, next) => {
+  res.set({
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'GET',
+    'Access-Control-Allow-Headers': 'Content-Type',
+    'Cache-Control': 'public, max-age=3600',
+  });
   res.sendFile(
     path.join(distPath, '.well-known', 'mcp', 'server-card.json'),
     { dotfiles: 'allow' },

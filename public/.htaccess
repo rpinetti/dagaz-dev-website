@@ -3,11 +3,25 @@
   RewriteEngine On
   RewriteBase /
   RewriteRule ^index\.html$ - [L]
+
+  # Serve the compact Markdown alternate when requested by an agent.
+  RewriteCond %{HTTP_ACCEPT} text/markdown [NC]
+  RewriteRule ^$ /index.md [L,T=text/markdown]
+
+  # Keep the SPA fallback only for known application routes.
+  RewriteRule ^(sobre|blog|contato|privacidade|termos|links)/?$ /index.html [L]
+  # BEGIN GENERATED ARTICLE ROUTES
+  RewriteRule ^artigo/hello-world/?$ /index.html [L]
+  # END GENERATED ARTICLE ROUTES
+
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
   RewriteCond %{REQUEST_FILENAME} !-l
-  RewriteRule . /index.html [L]
+  RewriteRule . - [R=404,L]
 </IfModule>
+
+# Return a useful body without changing the 404 status.
+ErrorDocument 404 /404.html
 
 # Permitir arquivos .md e .json (MIME Types)
 <IfModule mod_mime.c>
@@ -26,4 +40,17 @@
 # Ativar Gzip para performance
 <IfModule mod_deflate.c>
   AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript application/json text/markdown
+</IfModule>
+
+# Advertise agent-readable resources on HTML pages served by Apache.
+<IfModule mod_headers.c>
+  <FilesMatch "^index\.html$">
+    Header always set Link "<https://dagaz.dev/llms.txt>; rel=\"describedby\"; type=\"text/plain\", <https://dagaz.dev/index.md>; rel=\"alternate\"; type=\"text/markdown\""
+  </FilesMatch>
+  <FilesMatch "^server-card\.json$">
+    Header always set Access-Control-Allow-Origin "*"
+    Header always set Access-Control-Allow-Methods "GET"
+    Header always set Access-Control-Allow-Headers "Content-Type"
+    Header always set Cache-Control "public, max-age=3600"
+  </FilesMatch>
 </IfModule>

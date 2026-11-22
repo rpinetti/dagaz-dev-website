@@ -30,6 +30,8 @@ const escapeXml = (value) => String(value)
   .replaceAll('"', '&quot;')
   .replaceAll("'", '&apos;');
 
+const escapeRegex = value => String(value).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
 async function generateSitemap() {
   let blogRoutes = [];
   const generatedAt = getDate();
@@ -83,6 +85,22 @@ ${allRoutes.map(route => `  <url>
 
   const sitemapPath = path.join(__dirname, '../public/sitemap.xml');
   fs.writeFileSync(sitemapPath, sitemapContent);
+
+  const htaccessPath = path.join(__dirname, '../public/.htaccess');
+  const htaccess = fs.readFileSync(htaccessPath, 'utf8');
+  const articleRules = allRoutes
+    .filter(route => route.url.startsWith('/artigo/'))
+    .map(route => `  RewriteRule ^artigo/${escapeRegex(decodeURIComponent(route.url.slice('/artigo/'.length)))}\/?$ /index.html [L]`)
+    .join('\n');
+  const generatedRules = `  # BEGIN GENERATED ARTICLE ROUTES\n${articleRules}\n  # END GENERATED ARTICLE ROUTES`;
+  const updatedHtaccess = htaccess.replace(
+    /  # BEGIN GENERATED ARTICLE ROUTES[\s\S]*?  # END GENERATED ARTICLE ROUTES/,
+    generatedRules
+  );
+  if (updatedHtaccess === htaccess && !htaccess.includes('# BEGIN GENERATED ARTICLE ROUTES')) {
+    throw new Error(`Could not find generated article-route markers in ${htaccessPath}`);
+  }
+  fs.writeFileSync(htaccessPath, updatedHtaccess);
 
   console.log(`✅ Sitemap gerado com sucesso em ${sitemapPath}`);
   console.log(`📊 Total de rotas: ${allRoutes.length}`);
